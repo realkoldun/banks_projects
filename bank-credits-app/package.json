@@ -6,9 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist"
   },
-  "keywords": ["banks", "credits", "belarus", "optimization"],
+  "homepage": "https://realkoldun.github.io/banks_projects/",
+  "keywords": [
+    "banks",
+    "credits",
+    "belarus",
+    "optimization"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,6 +26,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",
+    "gh-pages": "^6.3.0",
     "vite": "^8.0.8"
   }
 }
