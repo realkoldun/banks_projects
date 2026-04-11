@@ -1,0 +1,23 @@
+{
+  "name": "bank-credits-app",
+  "version": "1.0.0",
+  "description": "Оптимизация деятельности коммерческих банков по предоставлению кредитных услуг физическим лицам",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["banks", "credits", "belarus", "optimization"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.14.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.8"
+  }
+}
