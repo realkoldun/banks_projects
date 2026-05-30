@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { creditProducts, getBankById } from '../../data/banks'
+import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { calcPayment, buildSchedule } from '../../utils/creditCalc'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
 import { convertFromBYN } from '../../api/exchangeRate'
@@ -23,8 +23,10 @@ function loadLastState() {
 }
 
 function Calculator() {
+  const { banks, products, loading: dataLoading, error: dataError } = useBanksData()
+
   const last = loadLastState()
-  const [selectedCredit, setSelectedCredit] = useState(last?.creditId || creditProducts[0].id)
+  const [selectedCredit, setSelectedCredit] = useState(last?.creditId || '')
   const [amount, setAmount] = useState(last?.amount || 10000)
   const [term, setTerm] = useState(last?.term || 24)
   const [paymentType, setPaymentType] = useState(last?.paymentType || 'annuity')
@@ -32,13 +34,13 @@ function Calculator() {
   const [showCompare, setShowCompare] = useState(false)
   const [compareCredit, setCompareCredit] = useState('')
 
-  const { rates, loading } = useExchangeRates()
+  const { rates } = useExchangeRates()
 
-  const credit = creditProducts.find(c => c.id === selectedCredit) || creditProducts[0]
-  const bank = getBankById(credit.bankId)
+  const credit = products.find(c => c.id === selectedCredit) || products[0]
+  const bank = credit ? getBankById(banks, credit.bankId) : null
   const rate = rates?.[currency] || 1
-  const ratePerMonth = credit.rate / 12 / 100
-  const monthlyPaymentBYN = calcPayment(amount, ratePerMonth, term, paymentType)
+  const ratePerMonth = credit ? credit.rate / 12 / 100 : 0
+  const monthlyPaymentBYN = credit ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
   const totalPaymentBYN = monthlyPaymentBYN * term
   const overpaymentBYN = totalPaymentBYN - amount
 
@@ -48,8 +50,8 @@ function Calculator() {
   )
 
   const totalInterestBYN = schedule.reduce((s, r) => s + r.interest, 0)
-  const otherCredit = compareCredit ? creditProducts.find(c => c.id === compareCredit) : null
-  const otherBank = otherCredit ? getBankById(otherCredit.bankId) : null
+  const otherCredit = compareCredit ? products.find(c => c.id === compareCredit) : null
+  const otherBank = otherCredit ? getBankById(banks, otherCredit.bankId) : null
 
   const monthlyPayment = convertFromBYN(monthlyPaymentBYN, rate)
   const totalPayment = convertFromBYN(totalPaymentBYN, rate)
@@ -64,6 +66,10 @@ function Calculator() {
     } catch {}
   }, [selectedCredit, amount, term, paymentType, currency])
 
+  if (dataLoading) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem' }}>Загрузка данных...</div></div>
+  if (dataError) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>Ошибка: {dataError}</div></div>
+  if (!credit) return null
+
   return (
     <div className="calculator-page">
       <h1 className="page-title animate-in">{CALCULATOR.title}</h1>
@@ -74,11 +80,14 @@ function Calculator() {
           <div className="form-group calculator__select-group">
             <label className="form-label">{CALCULATOR.productLabel}</label>
             <select className="form-select" value={selectedCredit} onChange={e => setSelectedCredit(e.target.value)}>
-              {creditProducts.map(c => (
-                <option key={c.id} value={c.id}>
-                  {getBankById(c.bankId).logo} {getBankById(c.bankId).name} — {c.name} ({c.rate}%)
-                </option>
-              ))}
+              {products.map(c => {
+                const b = getBankById(banks, c.bankId)
+                return (
+                  <option key={c.id} value={c.id}>
+                    {b?.logo} {b?.name} — {c.name} ({c.rate}%)
+                  </option>
+                )
+              })}
             </select>
           </div>
           <div className="form-group calculator__select-group">
@@ -154,13 +163,16 @@ function Calculator() {
               onChange={e => setCompareCredit(e.target.value)}
             >
               <option value="">{CALCULATOR.selectPlaceholder}</option>
-              {creditProducts
+              {products
                 .filter(c => c.id !== selectedCredit)
-                .map(c => (
-                  <option key={c.id} value={c.id}>
-                    {getBankById(c.bankId).logo} {getBankById(c.bankId).name} — {c.name} ({c.rate}%)
-                  </option>
-                ))}
+                .map(c => {
+                  const b = getBankById(banks, c.bankId)
+                  return (
+                    <option key={c.id} value={c.id}>
+                      {b?.logo} {b?.name} — {c.name} ({c.rate}%)
+                    </option>
+                  )
+                })}
             </select>
           </div>
           <div className="calculator__compare-panel">

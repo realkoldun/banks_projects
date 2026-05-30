@@ -1,8 +1,7 @@
-import { creditTypes } from '../../data/banks'
 import { COMPARE, FILTER } from '../../locales'
 import './filterBar.css'
 
-function FilterBar({ selectedType, onTypeChange, sortBy, onSortChange, uniqueTypes }) {
+function FilterBar({ selectedType, onTypeChange, sortBy, onSortChange, uniqueTypes, creditTypes }) {
   return (
     <div className="card filter-bar" style={{ marginBottom: '2rem' }}>
       <div className="filter-bar__row">

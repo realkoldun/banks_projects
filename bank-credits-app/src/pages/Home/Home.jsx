@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
-import { banks, creditProducts, creditTypes } from '../../data/banks'
+import { useBanksData } from '../../hooks/useBanksData'
 import { HOME } from '../../locales'
 import StatsCards from '../../components/StatsCards'
 import BankCard from '../../components/BankCard'
 import './home.css'
 
 function Home() {
+  const { banks, products, creditTypes, loading, error } = useBanksData()
+
   const stats = useMemo(() => {
+    if (!products.length) return []
     const totalBanks = banks.length
-    const totalProducts = creditProducts.length
-    const avgRate = (creditProducts.reduce((sum, c) => sum + c.rate, 0) / totalProducts).toFixed(2)
-    const maxLoan = Math.max(...creditProducts.map(c => c.maxAmount))
+    const totalProducts = products.length
+    const avgRate = (products.reduce((sum, c) => sum + c.rate, 0) / totalProducts).toFixed(2)
+    const maxLoan = Math.max(...products.map(c => c.maxAmount))
 
     return [
       { value: totalBanks, label: HOME.stats[0].label },
@@ -19,12 +22,15 @@ function Home() {
       { value: `${avgRate}%`, label: HOME.stats[2].label },
       { value: `${(maxLoan / 1000).toFixed(0)} тыс.`, label: HOME.stats[3].label }
     ]
-  }, [])
+  }, [banks, products])
 
   const uniqueTypes = useMemo(
-    () => [...new Set(creditProducts.map(c => c.type))],
-    []
+    () => [...new Set(products.map(c => c.type))],
+    [products]
   )
+
+  if (loading) return <div className="home"><div className="card" style={{ textAlign: 'center', padding: '3rem' }}>Загрузка данных...</div></div>
+  if (error) return <div className="home"><div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>Ошибка: {error}</div></div>
 
   return (
     <div className="home">
@@ -43,7 +49,7 @@ function Home() {
         <h2 className="home__section-title">{HOME.banksTitle}</h2>
         <div className="card-grid">
           {banks.map(bank => {
-            const bankCredits = creditProducts.filter(c => c.bankId === bank.id)
+            const bankCredits = products.filter(c => c.bankId === bank.id)
             const minRate = Math.min(...bankCredits.map(c => c.rate), Infinity)
 
             return (
@@ -57,7 +63,7 @@ function Home() {
         <h2 className="home__section-title">{HOME.typesTitle}</h2>
         <div className="card-grid">
           {uniqueTypes.map(type => {
-            const typeCredits = creditProducts.filter(c => c.type === type)
+            const typeCredits = products.filter(c => c.type === type)
             const avgTypeRate = (typeCredits.reduce((sum, c) => sum + c.rate, 0) / typeCredits.length).toFixed(2)
 
             return (

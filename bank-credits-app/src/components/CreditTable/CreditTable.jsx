@@ -1,8 +1,7 @@
-import { creditTypes } from '../../data/banks'
 import { COMPARE, CREDIT_TABLE, SHARED } from '../../locales'
 import './creditTable.css'
 
-function CreditTable({ products, getBankById, currency, rates }) {
+function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
   if (!products || products.length === 0) {
     return (
       <div className="card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>

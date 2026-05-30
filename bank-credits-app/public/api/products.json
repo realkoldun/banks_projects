@@ -1,0 +1,182 @@
+[
+  {
+    "id": "consumer-3y",
+    "bankId": "belarusbank",
+    "name": "Кредит на потребительские нужды (до 3 лет)",
+    "type": "consumer",
+    "rate": 18.2,
+    "maxTerm": 36,
+    "maxAmount": 30000,
+    "currency": "BYN"
+  },
+  {
+    "id": "dream",
+    "bankId": "belarusbank",
+    "name": "Кредит «На самае жаданае»",
+    "type": "consumer",
+    "rate": 0.01,
+    "maxTerm": 48,
+    "maxAmount": 20000,
+    "currency": "BYN"
+  },
+  {
+    "id": "endless-card",
+    "bankId": "belarusbank",
+    "name": "Кредит «Бесконечная карта»",
+    "type": "consumer",
+    "rate": 0.0001,
+    "maxTerm": 96,
+    "maxAmount": 15000,
+    "currency": "BYN"
+  },
+  {
+    "id": "belarusian-goods",
+    "bankId": "belarusbank",
+    "name": "Кредит «На родныя тавары»",
+    "type": "consumer",
+    "rate": 4,
+    "maxTerm": 36,
+    "maxAmount": 25000,
+    "currency": "BYN"
+  },
+  {
+    "id": "auto-lada",
+    "bankId": "belarusbank",
+    "name": "Кредит «Лёгка ехаць с LADA»",
+    "type": "auto",
+    "rate": 18.5,
+    "maxTerm": 120,
+    "maxAmount": 80000,
+    "currency": "BYN"
+  },
+  {
+    "id": "auto-geely",
+    "bankId": "belarusbank",
+    "name": "Кредит на GEELY (электромобили)",
+    "type": "auto",
+    "rate": 16.25,
+    "maxTerm": 120,
+    "maxAmount": 100000,
+    "currency": "BYN"
+  },
+  {
+    "id": "education",
+    "bankId": "belarusbank",
+    "name": "Кредит на обучение",
+    "type": "education",
+    "rate": 13.75,
+    "maxTerm": 132,
+    "maxAmount": 50000,
+    "currency": "BYN"
+  },
+  {
+    "id": "overdraft-magnet",
+    "bankId": "belarusbank",
+    "name": "Овердрафт «Магнит»",
+    "type": "overdraft",
+    "rate": 5,
+    "maxTerm": 60,
+    "maxAmount": 10000,
+    "currency": "BYN"
+  },
+  {
+    "id": "consumer-prior",
+    "bankId": "priorbank",
+    "name": "Потребительский кредит",
+    "type": "consumer",
+    "rate": 16.5,
+    "maxTerm": 60,
+    "maxAmount": 40000,
+    "currency": "BYN"
+  },
+  {
+    "id": "auto-prior",
+    "bankId": "priorbank",
+    "name": "Автокредит",
+    "type": "auto",
+    "rate": 15,
+    "maxTerm": 84,
+    "maxAmount": 90000,
+    "currency": "BYN"
+  },
+  {
+    "id": "consumer-agro",
+    "bankId": "belagroprombank",
+    "name": "Потребительский кредит",
+    "type": "consumer",
+    "rate": 17.5,
+    "maxTerm": 48,
+    "maxAmount": 25000,
+    "currency": "BYN"
+  },
+  {
+    "id": "mortgage-agro",
+    "bankId": "belagroprombank",
+    "name": "Ипотечный кредит",
+    "type": "mortgage",
+    "rate": 12,
+    "maxTerm": 240,
+    "maxAmount": 200000,
+    "currency": "BYN"
+  },
+  {
+    "id": "consumer-alfa",
+    "bankId": "alfa-bank",
+    "name": "Потребительский кредит",
+    "type": "consumer",
+    "rate": 15.9,
+    "maxTerm": 60,
+    "maxAmount": 50000,
+    "currency": "BYN"
+  },
+  {
+    "id": "auto-alfa",
+    "bankId": "alfa-bank",
+    "name": "Автокредит",
+    "type": "auto",
+    "rate": 14.5,
+    "maxTerm": 96,
+    "maxAmount": 100000,
+    "currency": "BYN"
+  },
+  {
+    "id": "consumer-mt",
+    "bankId": "mtbank",
+    "name": "Потребительский кредит",
+    "type": "consumer",
+    "rate": 16,
+    "maxTerm": 60,
+    "maxAmount": 35000,
+    "currency": "BYN"
+  },
+  {
+    "id": "auto-mt",
+    "bankId": "mtbank",
+    "name": "Автокредит",
+    "type": "auto",
+    "rate": 15.5,
+    "maxTerm": 84,
+    "maxAmount": 85000,
+    "currency": "BYN"
+  },
+  {
+    "id": "consumer-sber",
+    "bankId": "sberbank",
+    "name": "Потребительский кредит",
+    "type": "consumer",
+    "rate": 17,
+    "maxTerm": 60,
+    "maxAmount": 30000,
+    "currency": "BYN"
+  },
+  {
+    "id": "mortgage-belinvest",
+    "bankId": "belinvestbank",
+    "name": "Ипотечный кредит",
+    "type": "mortgage",
+    "rate": 13.5,
+    "maxTerm": 240,
+    "maxAmount": 180000,
+    "currency": "BYN"
+  }
+]

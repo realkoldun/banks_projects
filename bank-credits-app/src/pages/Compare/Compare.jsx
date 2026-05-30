@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { creditProducts, getBankById } from '../../data/banks'
+import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { COMPARE } from '../../locales'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
 import FilterBar from '../../components/FilterBar'
@@ -13,16 +13,17 @@ function Compare() {
   const [currency, setCurrency] = useState('BYN')
 
   const { rates } = useExchangeRates()
+  const { banks, products, creditTypes, loading, error } = useBanksData()
 
   const uniqueTypes = useMemo(
-    () => [...new Set(creditProducts.map(c => c.type))],
-    []
+    () => [...new Set(products.map(c => c.type))],
+    [products]
   )
 
   const sorted = useMemo(() => {
     let filtered = selectedType === 'all'
-      ? [...creditProducts]
-      : creditProducts.filter(c => c.type === selectedType)
+      ? [...products]
+      : products.filter(c => c.type === selectedType)
 
     return filtered.sort((a, b) => {
       if (sortBy === 'rate') return a.rate - b.rate
@@ -30,7 +31,10 @@ function Compare() {
       if (sortBy === 'term') return b.maxTerm - a.maxTerm
       return 0
     })
-  }, [selectedType, sortBy])
+  }, [selectedType, sortBy, products])
+
+  if (loading) return <div className="compare-page"><div className="card" style={{ textAlign: 'center', padding: '3rem' }}>Загрузка данных...</div></div>
+  if (error) return <div className="compare-page"><div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>Ошибка: {error}</div></div>
 
   return (
     <div className="compare-page">
@@ -47,9 +51,10 @@ function Compare() {
         sortBy={sortBy}
         onSortChange={setSortBy}
         uniqueTypes={uniqueTypes}
+        creditTypes={creditTypes}
       />
 
-      <CreditTable products={sorted} getBankById={getBankById} currency={currency} rates={rates} />
+      <CreditTable products={sorted} getBankById={(id) => getBankById(banks, id)} currency={currency} rates={rates} creditTypes={creditTypes} />
     </div>
   )
 }
