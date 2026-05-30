@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { calcPayment } from '../../utils/creditCalc'
 import { convertFromBYN } from '../../api/exchangeRate'
 import RangeSlider from '../RangeSlider'
+import Select from '../Select'
 import { CALCULATOR, SHARED } from '../../locales'
 import './compareCard.css'
 
@@ -59,13 +60,15 @@ function CompareCard({ credit, bank, currency, rates }) {
         formatLabel={v => `${CALCULATOR.months(v)} (${CALCULATOR.years(v)})`}
       />
 
-      <div className="form-group">
-        <label className="form-label">{CALCULATOR.paymentTypeLabel}</label>
-        <select className="form-select" value={paymentType} onChange={e => setPaymentType(e.target.value)}>
-          <option value="annuity">{CALCULATOR.annuity}</option>
-          <option value="differentiated">{CALCULATOR.differentiated}</option>
-        </select>
-      </div>
+      <Select
+        label={CALCULATOR.paymentTypeLabel}
+        value={paymentType}
+        onChange={setPaymentType}
+        options={[
+          { value: 'annuity', label: CALCULATOR.annuity },
+          { value: 'differentiated', label: CALCULATOR.differentiated }
+        ]}
+      />
 
       <div className="result-box compare-card__result">
         <div className="result-row">

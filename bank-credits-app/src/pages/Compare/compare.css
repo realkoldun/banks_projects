@@ -1,1 +1,4 @@
-/* compare page specific styles */
+.compare-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}

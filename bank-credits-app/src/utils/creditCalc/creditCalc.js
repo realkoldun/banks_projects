@@ -1,6 +1,3 @@
-/**
- * Рассчитать ежемесячный платёж
- */
 export function calcPayment(amount, ratePerMonth, term, type) {
   if (type === 'annuity') {
     if (ratePerMonth === 0) return amount / term
@@ -10,9 +7,6 @@ export function calcPayment(amount, ratePerMonth, term, type) {
   return amount / term + amount * ratePerMonth
 }
 
-/**
- * Построить полный график платежей
- */
 export function buildSchedule(amount, ratePerMonth, term, monthlyPayment, type) {
   const schedule = []
   let balance = amount

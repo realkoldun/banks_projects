@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { fetchBanks, fetchProducts, fetchCreditTypes } from '../api/banks'
 
 const CACHE_KEY = 'bank-data-cache'
-const CACHE_TTL = 5 * 60 * 1000 // 5 минут
+const CACHE_TTL = 5 * 60 * 1000
 
 function loadFromCache() {
   try {
@@ -72,7 +72,6 @@ export function useBanksData() {
   return { banks, products, creditTypes, loading, error, refresh }
 }
 
-// Вспомогательные функции для работы с данными (как раньше, но теперь на лету)
 export function getBankById(banks, id) {
   return banks.find(b => b.id === id)
 }

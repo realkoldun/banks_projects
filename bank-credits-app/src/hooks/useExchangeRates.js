@@ -14,8 +14,6 @@ export function useExchangeRates() {
       setRates(data)
     } catch (err) {
       setError(err.message)
-      // getExchangeRates() уже пробует вернуть просроченный кэш,
-      // если не смог — оставляем старые курсы или null
       if (!rates) {
         setRates(null)
       }

@@ -1,6 +1,3 @@
-// В dev-режиме (Vite dev server) — проксирует на Express (localhost:3001)
-// В продакшене (GitHub Pages) — подтягивает статичные JSON из public/api/
-
 const API_BASE = '/api'
 
 async function request(url) {

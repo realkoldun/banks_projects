@@ -4,6 +4,7 @@ import { calcPayment, buildSchedule } from '../../utils/creditCalc'
 import { useExchangeRates } from '../../hooks/useExchangeRates'
 import { convertFromBYN } from '../../api/exchangeRate'
 import { CALCULATOR, SHARED } from '../../locales'
+import Select from '../../components/Select'
 import RangeSlider from '../../components/RangeSlider'
 import CurrencyToggle from '../../components/CurrencyToggle'
 import CreditResult from '../../components/CreditResult'
@@ -77,26 +78,26 @@ function Calculator() {
 
       <div className="card animate-in stagger-2 calculator__params">
         <div className="calculator__row">
-          <div className="form-group calculator__select-group">
-            <label className="form-label">{CALCULATOR.productLabel}</label>
-            <select className="form-select" value={selectedCredit} onChange={e => setSelectedCredit(e.target.value)}>
-              {products.map(c => {
-                const b = getBankById(banks, c.bankId)
-                return (
-                  <option key={c.id} value={c.id}>
-                    {b?.logo} {b?.name} — {c.name} ({c.rate}%)
-                  </option>
-                )
-              })}
-            </select>
-          </div>
-          <div className="form-group calculator__select-group">
-            <label className="form-label">{CALCULATOR.paymentTypeLabel}</label>
-            <select className="form-select" value={paymentType} onChange={e => setPaymentType(e.target.value)}>
-              <option value="annuity">{CALCULATOR.annuity}</option>
-              <option value="differentiated">{CALCULATOR.differentiated}</option>
-            </select>
-          </div>
+          <Select
+            label={CALCULATOR.productLabel}
+            value={selectedCredit}
+            onChange={setSelectedCredit}
+            options={products.map(c => {
+              const b = getBankById(banks, c.bankId)
+              return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
+            })}
+            className="calculator__select-group"
+          />
+          <Select
+            label={CALCULATOR.paymentTypeLabel}
+            value={paymentType}
+            onChange={setPaymentType}
+            options={[
+              { value: 'annuity', label: CALCULATOR.annuity },
+              { value: 'differentiated', label: CALCULATOR.differentiated }
+            ]}
+            className="calculator__select-group"
+          />
           <div className="form-group calculator__select-group" style={{ minWidth: '200px' }}>
             <CurrencyToggle value={currency} onChange={setCurrency} />
           </div>
@@ -157,23 +158,17 @@ function Calculator() {
         <div className="animate-in stagger-2" style={{ marginTop: '1.5rem' }}>
           <div className="form-group" style={{ marginBottom: '1rem' }}>
             <label className="form-label">{CALCULATOR.selectCompare}</label>
-            <select
-              className="form-select"
+            <Select
               value={compareCredit}
-              onChange={e => setCompareCredit(e.target.value)}
-            >
-              <option value="">{CALCULATOR.selectPlaceholder}</option>
-              {products
+              onChange={setCompareCredit}
+              placeholder={CALCULATOR.selectPlaceholder}
+              options={products
                 .filter(c => c.id !== selectedCredit)
                 .map(c => {
                   const b = getBankById(banks, c.bankId)
-                  return (
-                    <option key={c.id} value={c.id}>
-                      {b?.logo} {b?.name} — {c.name} ({c.rate}%)
-                    </option>
-                  )
+                  return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
                 })}
-            </select>
+            />
           </div>
           <div className="calculator__compare-panel">
             <div className="card calculator__summary-card">
