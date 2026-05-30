@@ -18,12 +18,12 @@ function CreditResult({ bank, credit, amount, term, monthlyPayment, totalPayment
           <span className="credit-result__amount">{amount.toLocaleString()} {currency}</span>
         </div>
         <div className="result-row">
-          <span>{SHARED.rate_label || 'Процентная ставка'}</span>
+          <span>{SHARED.rate_label}</span>
           <span className="credit-result__rate">{SHARED.rate(rate)}</span>
         </div>
         <div className="result-row">
           <span>{CALCULATOR.termLabel}</span>
-          <span>{term} {CALCULATOR.months('').trim() || `мес`} ({(term / 12).toFixed(1)} лет)</span>
+          <span>{SHARED.months(term)} ({SHARED.years(term)})</span>
         </div>
         <div className="result-row">
           <span>{paymentType === 'annuity' ? CALCULATOR.monthlyPayment : CALCULATOR.firstPayment}</span>

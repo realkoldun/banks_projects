@@ -99,7 +99,15 @@ export const SHARED = {
   byn: 'BYN',
   noData: 'Нет данных',
   loading: 'Загрузка...',
-  error: 'Ошибка загрузки'
+  error: 'Ошибка загрузки',
+  months: (n) => `${n} мес`,
+  years: (n) => `${(n / 12).toFixed(1)} лет`,
+  dash: '—',
+  productsCountLabel: 'Кредитных продуктов',
+  minRateLabel: 'Мин. ставка',
+  physicalShareLabel: 'Доля физ. лиц',
+  marketShareLabel: (n) => `Доля рынка: ${n}%`,
+  rateValue: (n) => `${n}%`
 }
 
 export const CURRENCY = {

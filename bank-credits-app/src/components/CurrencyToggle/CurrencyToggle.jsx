@@ -1,7 +1,7 @@
 import { CURRENCY } from '../../locales'
 import './currencyToggle.css'
 
-const currencies = ['BYN', 'USD', 'EUR', 'RUB', 'CNY']
+const currencies = Object.keys(CURRENCY.symbols)
 
 function CurrencyToggle({ value, onChange }) {
   return (
@@ -15,13 +15,7 @@ function CurrencyToggle({ value, onChange }) {
             onClick={() => onChange(curr)}
             title={CURRENCY[curr]}
           >
-            <span className="currency-toggle__icon">
-              {curr === 'USD' && '$'}
-              {curr === 'EUR' && '€'}
-              {curr === 'RUB' && '₽'}
-              {curr === 'CNY' && '¥'}
-              {curr === 'BYN' && 'Br'}
-            </span>
+            <span className="currency-toggle__icon">{CURRENCY.symbols[curr]}</span>
             <span className="currency-toggle__code">{curr}</span>
           </button>
         ))}

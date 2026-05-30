@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { calcPayment } from '../../utils/creditCalc'
 import { convertFromBYN } from '../../api/exchangeRate'
 import RangeSlider from '../RangeSlider'
-import { CALCULATOR } from '../../locales'
+import { CALCULATOR, SHARED } from '../../locales'
 import './compareCard.css'
 
 function CompareCard({ credit, bank, currency, rates }) {
@@ -69,7 +69,7 @@ function CompareCard({ credit, bank, currency, rates }) {
 
       <div className="result-box compare-card__result">
         <div className="result-row">
-          <span>Ставка</span>
+          <span>{SHARED.rate_label}</span>
           <span className="compare-card__rate">{credit.rate}%</span>
         </div>
         <div className="result-row">
