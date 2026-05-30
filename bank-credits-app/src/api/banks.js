@@ -1,7 +1,8 @@
-const API_BASE = '/api'
+const API_BASE = `${import.meta.env.BASE_URL}api`
 
-async function request(url) {
-  const res = await fetch(`${API_BASE}${url}`)
+async function request(path) {
+  const url = `${API_BASE}${path}.json`
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`API error: ${res.status}`)
   return res.json()
 }
@@ -15,13 +16,7 @@ export async function fetchBankById(id) {
 }
 
 export async function fetchProducts(params = {}) {
-  const query = new URLSearchParams()
-  if (params.bankId) query.set('bankId', params.bankId)
-  if (params.type) query.set('type', params.type)
-  if (params.sortBy) query.set('sortBy', params.sortBy)
-  if (params.order) query.set('order', params.order)
-  const qs = query.toString()
-  return request(`/products${qs ? `?${qs}` : ''}`)
+  return request('/products')
 }
 
 export async function fetchProductById(id) {

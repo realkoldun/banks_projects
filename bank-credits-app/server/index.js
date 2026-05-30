@@ -12,6 +12,10 @@ app.get('/api/banks', (req, res) => {
   res.json(banks)
 })
 
+app.get('/api/banks.json', (req, res) => {
+  res.json(banks)
+})
+
 app.get('/api/banks/:id', (req, res) => {
   const bank = banks.find(b => b.id === req.params.id)
   if (!bank) return res.status(404).json({ error: 'Bank not found' })
@@ -39,6 +43,10 @@ app.get('/api/products', (req, res) => {
   res.json(result)
 })
 
+app.get('/api/products.json', (req, res) => {
+  res.json(creditProducts)
+})
+
 app.get('/api/products/:id', (req, res) => {
   const product = creditProducts.find(c => c.id === req.params.id)
   if (!product) return res.status(404).json({ error: 'Product not found' })
@@ -46,6 +54,10 @@ app.get('/api/products/:id', (req, res) => {
 })
 
 app.get('/api/credit-types', (req, res) => {
+  res.json(creditTypes)
+})
+
+app.get('/api/credit-types.json', (req, res) => {
   res.json(creditTypes)
 })
 
