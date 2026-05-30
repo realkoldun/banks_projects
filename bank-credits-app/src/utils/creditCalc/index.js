@@ -1,0 +1,1 @@
+export { calcPayment, buildSchedule } from './creditCalc'

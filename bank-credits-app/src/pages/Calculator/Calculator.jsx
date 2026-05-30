@@ -1,0 +1,186 @@
+import { useState, useEffect, useMemo } from 'react'
+import { creditProducts, getBankById } from '../../data/banks'
+import { calcPayment, buildSchedule } from '../../utils/creditCalc'
+import { useExchangeRates } from '../../hooks/useExchangeRates'
+import { convertFromBYN } from '../../api/exchangeRate'
+import { CALCULATOR, SHARED } from '../../locales'
+import RangeSlider from '../../components/RangeSlider'
+import CurrencyToggle from '../../components/CurrencyToggle'
+import CreditResult from '../../components/CreditResult'
+import PaymentChart from '../../components/PaymentChart'
+import PaymentSchedule from '../../components/PaymentSchedule'
+import CompareCard from '../../components/CompareCard'
+import './calculator.css'
+
+const STORAGE_KEY = 'bank-calc-last'
+
+function loadLastState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) return JSON.parse(saved)
+  } catch {}
+  return null
+}
+
+function Calculator() {
+  const last = loadLastState()
+  const [selectedCredit, setSelectedCredit] = useState(last?.creditId || creditProducts[0].id)
+  const [amount, setAmount] = useState(last?.amount || 10000)
+  const [term, setTerm] = useState(last?.term || 24)
+  const [paymentType, setPaymentType] = useState(last?.paymentType || 'annuity')
+  const [currency, setCurrency] = useState(last?.currency || 'BYN')
+  const [showCompare, setShowCompare] = useState(false)
+  const [compareCredit, setCompareCredit] = useState('')
+
+  const { rates, loading } = useExchangeRates()
+
+  const credit = creditProducts.find(c => c.id === selectedCredit) || creditProducts[0]
+  const bank = getBankById(credit.bankId)
+  const rate = rates?.[currency] || 1
+  const ratePerMonth = credit.rate / 12 / 100
+  const monthlyPaymentBYN = calcPayment(amount, ratePerMonth, term, paymentType)
+  const totalPaymentBYN = monthlyPaymentBYN * term
+  const overpaymentBYN = totalPaymentBYN - amount
+
+  const schedule = useMemo(
+    () => buildSchedule(amount, ratePerMonth, term, monthlyPaymentBYN, paymentType),
+    [amount, ratePerMonth, term, monthlyPaymentBYN, paymentType]
+  )
+
+  const totalInterestBYN = schedule.reduce((s, r) => s + r.interest, 0)
+  const otherCredit = compareCredit ? creditProducts.find(c => c.id === compareCredit) : null
+  const otherBank = otherCredit ? getBankById(otherCredit.bankId) : null
+
+  const monthlyPayment = convertFromBYN(monthlyPaymentBYN, rate)
+  const totalPayment = convertFromBYN(totalPaymentBYN, rate)
+  const overpayment = convertFromBYN(overpaymentBYN, rate)
+  const amountDisplay = convertFromBYN(amount, rate)
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        creditId: selectedCredit, amount, term, paymentType, currency
+      }))
+    } catch {}
+  }, [selectedCredit, amount, term, paymentType, currency])
+
+  return (
+    <div className="calculator-page">
+      <h1 className="page-title animate-in">{CALCULATOR.title}</h1>
+      <p className="page-subtitle animate-in stagger-1">{CALCULATOR.subtitle}</p>
+
+      <div className="card animate-in stagger-2 calculator__params">
+        <div className="calculator__row">
+          <div className="form-group calculator__select-group">
+            <label className="form-label">{CALCULATOR.productLabel}</label>
+            <select className="form-select" value={selectedCredit} onChange={e => setSelectedCredit(e.target.value)}>
+              {creditProducts.map(c => (
+                <option key={c.id} value={c.id}>
+                  {getBankById(c.bankId).logo} {getBankById(c.bankId).name} — {c.name} ({c.rate}%)
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group calculator__select-group">
+            <label className="form-label">{CALCULATOR.paymentTypeLabel}</label>
+            <select className="form-select" value={paymentType} onChange={e => setPaymentType(e.target.value)}>
+              <option value="annuity">{CALCULATOR.annuity}</option>
+              <option value="differentiated">{CALCULATOR.differentiated}</option>
+            </select>
+          </div>
+          <div className="form-group calculator__select-group" style={{ minWidth: '200px' }}>
+            <CurrencyToggle value={currency} onChange={setCurrency} />
+          </div>
+        </div>
+
+        <RangeSlider
+          label={CALCULATOR.amountLabel}
+          value={amount}
+          onChange={setAmount}
+          min={1000}
+          max={credit.maxAmount}
+          step={1000}
+          formatLabel={v => `${convertFromBYN(v, rate).toLocaleString()} ${currency}`}
+        />
+
+        <RangeSlider
+          label={CALCULATOR.termLabel}
+          value={term}
+          onChange={setTerm}
+          min={6}
+          max={credit.maxTerm}
+          step={1}
+          formatLabel={v => `${CALCULATOR.months(v)} (${CALCULATOR.years(v)})`}
+        />
+      </div>
+
+      <div className="calculator__results">
+        <CreditResult
+          bank={bank}
+          credit={credit}
+          amount={amountDisplay}
+          term={term}
+          monthlyPayment={monthlyPayment}
+          totalPayment={totalPayment}
+          overpayment={overpayment}
+          paymentType={paymentType}
+          currency={currency}
+          rate={credit.rate}
+        />
+
+        <div className="card animate-in stagger-3 calculator__chart">
+          <h3 className="calculator__chart-title">{CALCULATOR.chartTitle}</h3>
+          <PaymentChart
+            totalPrincipal={amountDisplay}
+            totalInterest={convertFromBYN(totalInterestBYN, rate)}
+            currency={currency}
+          />
+        </div>
+      </div>
+
+      <div className="animate-in calculator__compare-btn">
+        <button className="btn btn-outline" onClick={() => setShowCompare(!showCompare)}>
+          {showCompare ? CALCULATOR.hideCompare : CALCULATOR.compareBtn}
+        </button>
+      </div>
+
+      {showCompare && (
+        <div className="animate-in stagger-2" style={{ marginTop: '1.5rem' }}>
+          <div className="form-group" style={{ marginBottom: '1rem' }}>
+            <label className="form-label">{CALCULATOR.selectCompare}</label>
+            <select
+              className="form-select"
+              value={compareCredit}
+              onChange={e => setCompareCredit(e.target.value)}
+            >
+              <option value="">{CALCULATOR.selectPlaceholder}</option>
+              {creditProducts
+                .filter(c => c.id !== selectedCredit)
+                .map(c => (
+                  <option key={c.id} value={c.id}>
+                    {getBankById(c.bankId).logo} {getBankById(c.bankId).name} — {c.name} ({c.rate}%)
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="calculator__compare-panel">
+            <div className="card calculator__summary-card">
+              <div className="calculator__summary-header">
+                {bank.logo} {bank.name} — {credit.name}
+              </div>
+              <div className="calculator__summary-info">
+                {CALCULATOR.summaryPayment}: <strong className="calculator__summary-payment">{monthlyPayment.toFixed(2)} {currency}</strong><br />
+                {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
+              </div>
+            </div>
+            <CompareCard credit={otherCredit} bank={otherBank} currency={currency} rates={rates} />
+          </div>
+        </div>
+      )}
+
+      <PaymentSchedule schedule={schedule} term={term} currency={currency} rate={rate} />
+    </div>
+  )
+}
+
+export default Calculator

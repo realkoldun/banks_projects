@@ -1,21 +1,16 @@
 import { NavLink } from 'react-router-dom'
-
-const navItems = [
-  { path: '/', label: 'Главная' },
-  { path: '/compare', label: 'Сравнение' },
-  { path: '/calculator', label: 'Калькулятор' },
-  { path: '/rating', label: 'Рейтинг' }
-]
+import { HEADER } from '../../locales'
+import './header.css'
 
 function Header() {
   return (
     <header className="header">
       <div className="header-inner">
         <NavLink to="/" className="logo">
-          Креди<span>т</span>Беларуси
+          {HEADER.logoPrefix}<span>{HEADER.logoSuffix}</span>{HEADER.logoSuffixSpan}
         </NavLink>
         <nav className="nav">
-          {navItems.map(item => (
+          {HEADER.nav.map(item => (
             <NavLink
               key={item.path}
               to={item.path}
