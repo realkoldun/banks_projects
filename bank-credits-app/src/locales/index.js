@@ -1,0 +1,11 @@
+export {
+  HEADER,
+  FOOTER,
+  HOME,
+  COMPARE,
+  CALCULATOR,
+  CREDIT_TABLE,
+  FILTER,
+  SHARED,
+  CURRENCY
+} from './ru'

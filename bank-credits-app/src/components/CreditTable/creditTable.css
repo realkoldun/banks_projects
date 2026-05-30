@@ -1,0 +1,22 @@
+.credit-table__bank-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.credit-table__bank-name {
+  font-weight: 500;
+}
+
+.credit-table__rate {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.credit-table__rate--low {
+  color: var(--color-success);
+}
+
+.credit-table__rate--medium {
+  color: var(--color-warning);
+}

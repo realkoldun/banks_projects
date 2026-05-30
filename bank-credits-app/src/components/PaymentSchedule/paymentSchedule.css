@@ -1,0 +1,26 @@
+.payment-schedule {
+  margin-top: 1.5rem;
+}
+
+.payment-schedule__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.payment-schedule__title {
+  font-family: var(--font-display);
+}
+
+.payment-schedule__toggle {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.payment-schedule__summary {
+  text-align: center;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
