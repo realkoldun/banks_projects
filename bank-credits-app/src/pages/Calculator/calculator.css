@@ -72,3 +72,45 @@
 .calculator__summary-overpayment {
   color: var(--color-warning);
 }
+
+@media (max-width: 768px) {
+  .calculator__row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .calculator__select-group {
+    min-width: 100%;
+  }
+
+  .calculator__results {
+    flex-direction: column;
+  }
+
+  .calculator__chart {
+    min-width: 100%;
+  }
+
+  .calculator__compare-panel {
+    flex-direction: column;
+  }
+
+  .calculator__compare-btn {
+    text-align: center;
+  }
+
+  .calculator__compare-btn .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator__summary-header {
+    font-size: 0.9rem;
+  }
+
+  .calculator__summary-info {
+    font-size: 0.85rem;
+  }
+}
