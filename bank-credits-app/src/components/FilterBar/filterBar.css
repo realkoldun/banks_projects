@@ -9,3 +9,13 @@
   min-width: 200px;
   margin-bottom: 0;
 }
+
+@media (max-width: 768px) {
+  .filter-bar__row {
+    flex-direction: column;
+  }
+
+  .filter-bar__group {
+    min-width: 100%;
+  }
+}

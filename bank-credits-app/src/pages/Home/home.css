@@ -50,3 +50,36 @@
 .credit-types {
   margin-bottom: 3rem;
 }
+
+@media (max-width: 768px) {
+  .home__section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__type-title {
+    font-size: 1.05rem;
+  }
+
+  .home__type-rate {
+    font-size: 1.2rem;
+  }
+
+  .hero {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home__section-title {
+    font-size: 1.2rem;
+  }
+
+  .home__type-rate {
+    font-size: 1.1rem;
+  }
+
+  .hero {
+    margin-bottom: 1.5rem;
+  }
+}
