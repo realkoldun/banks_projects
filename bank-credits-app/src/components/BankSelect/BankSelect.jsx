@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import Select from '../Select'
 import './bankSelect.css'
 

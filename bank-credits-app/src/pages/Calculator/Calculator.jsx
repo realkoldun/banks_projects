@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { calcPayment, buildSchedule } from '../../utils/creditCalc'
-import { CALCULATOR, SHARED } from '../../locales'
+import { CALCULATOR } from '../../locales'
 import { MIN_AMOUNT } from '../../constants'
 import { useProductsFilter } from '../../hooks/useProductsFilter'
 import Select from '../../components/Select'

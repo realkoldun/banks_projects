@@ -1,4 +1,3 @@
-import { CALCULATOR } from '../../locales'
 import { MIN_AMOUNT } from '../../constants'
 import './amountInput.css'
 
