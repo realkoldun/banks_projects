@@ -3,9 +3,11 @@ import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { calcPayment, buildSchedule } from '../../utils/creditCalc'
 import { CALCULATOR, SHARED } from '../../locales'
 import { MIN_AMOUNT } from '../../constants'
+import { useProductsFilter } from '../../hooks/useProductsFilter'
 import Select from '../../components/Select'
 import RangeSlider from '../../components/RangeSlider'
 import AmountInput from '../../components/AmountInput'
+import BankSelect from '../../components/BankSelect'
 import CreditResult from '../../components/CreditResult'
 import PaymentChart from '../../components/PaymentChart'
 import PaymentSchedule from '../../components/PaymentSchedule'
@@ -26,6 +28,7 @@ function Calculator() {
   const { banks, products, loading: dataLoading, error: dataError } = useBanksData()
 
   const last = loadLastState()
+  const [bankFilter, setBankFilter] = useState('')
   const [selectedCredit, setSelectedCredit] = useState(last?.creditId || '')
   const [amount, setAmount] = useState(last?.amount || 10000)
   const [term, setTerm] = useState(last?.term || 24)
@@ -35,7 +38,9 @@ function Calculator() {
 
   const currency = 'BYN'
 
-  const credit = products.find(c => c.id === selectedCredit) || products[0]
+  const filteredProducts = useProductsFilter(products, { bankId: bankFilter })
+
+  const credit = filteredProducts.find(c => c.id === selectedCredit) || filteredProducts[0]
   const bank = credit ? getBankById(banks, credit.bankId) : null
   const isAmountValid = amount >= MIN_AMOUNT && (!credit?.maxAmount || amount <= credit.maxAmount)
   const ratePerMonth = credit ? credit.rate / 12 / 100 : 0
@@ -49,7 +54,7 @@ function Calculator() {
   )
 
   const totalInterest = schedule.reduce((s, r) => s + r.interest, 0)
-  const otherCredit = compareCredit ? products.find(c => c.id === compareCredit) : null
+  const otherCredit = compareCredit ? filteredProducts.find(c => c.id === compareCredit) : null
   const otherBank = otherCredit ? getBankById(banks, otherCredit.bankId) : null
 
   useEffect(() => {
@@ -71,11 +76,17 @@ function Calculator() {
 
       <div className="card animate-in stagger-2 calculator__params">
         <div className="calculator__row">
+          <BankSelect
+            banks={banks}
+            value={bankFilter}
+            onChange={setBankFilter}
+            label="Банк"
+          />
           <Select
             label={CALCULATOR.productLabel}
             value={selectedCredit}
             onChange={setSelectedCredit}
-            options={products.map(c => {
+            options={filteredProducts.map(c => {
               const b = getBankById(banks, c.bankId)
               const promo = c.firstMonths ? ` [${c.firstMonths.rate}% на ${c.firstMonths.months} мес.]` : ''
               return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%${promo})` }
@@ -152,7 +163,7 @@ function Calculator() {
                   value={compareCredit}
                   onChange={setCompareCredit}
                   placeholder={CALCULATOR.selectPlaceholder}
-                  options={products
+                  options={filteredProducts
                     .filter(c => c.id !== selectedCredit)
                     .map(c => {
                       const b = getBankById(banks, c.bankId)
@@ -170,7 +181,14 @@ function Calculator() {
                     {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
                   </div>
                 </div>
-                <CompareCard credit={otherCredit} bank={otherBank} initialAmount={amount} initialTerm={term} />
+                <CompareCard
+                  credit={otherCredit}
+                  bank={otherBank}
+                  initialAmount={amount}
+                  initialTerm={term}
+                  banks={banks}
+                  products={products}
+                />
               </div>
             </div>
           )}
