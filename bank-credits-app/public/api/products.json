@@ -89,7 +89,7 @@
       "rate": 7.9,
       "months": 36
     },
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, поручители от 50000, залог"
   },
   {
@@ -104,7 +104,7 @@
       "rate": 7.9,
       "months": 36
     },
-    "firstPayment": 40.0,
+    "firstPayment": 40,
     "specialTerms": "Без справок, поручители от 50000, залог"
   },
   {
@@ -133,7 +133,7 @@
       "rate": 4.99,
       "months": 36
     },
-    "firstPayment": 40.0,
+    "firstPayment": 40,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -148,7 +148,7 @@
       "rate": 4.99,
       "months": 36
     },
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -191,7 +191,7 @@
       "rate": 3.99,
       "months": 24
     },
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, поручители от 50000, залог"
   },
   {
@@ -206,7 +206,7 @@
       "rate": 14.22,
       "months": 24
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Без справок, без поручителей, залог от 50"
   },
   {
@@ -214,30 +214,30 @@
     "bankId": "belinvestbank",
     "name": "На покупку от партнёра (Минск)",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0
+    "firstPayment": 10
   },
   {
     "id": "belinvestbank-на-строительство-от-партнёра-витебская",
     "bankId": "belinvestbank",
     "name": "На строительство от партнёра (Витебская)",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0
+    "firstPayment": 10
   },
   {
     "id": "belinvestbank-на-строительство-от-партнёра-гродненская",
     "bankId": "belinvestbank",
     "name": "На строительство от партнёра (Гродненская)",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0
+    "firstPayment": 10
   },
   {
     "id": "belinvestbank-на-строительство-от-партнёра-гомельская",
@@ -247,7 +247,7 @@
     "rate": 16.5,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0
+    "firstPayment": 10
   },
   {
     "id": "belinvestbank-на-покупку-от-партнёра-гродненская",
@@ -257,7 +257,7 @@
     "rate": 16.5,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0
+    "firstPayment": 10
   },
   {
     "id": "belarusbank-на-потребительские-нужды-до-3-лет-без-поручителей",
@@ -324,10 +324,10 @@
     "maxAmount": 50000,
     "maxTerm": 120,
     "firstMonths": {
-      "rate": 9.0,
+      "rate": 9,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -339,10 +339,10 @@
     "maxAmount": 50000,
     "maxTerm": 120,
     "firstMonths": {
-      "rate": 8.0,
+      "rate": 8,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -354,10 +354,10 @@
     "maxAmount": 50000,
     "maxTerm": 120,
     "firstMonths": {
-      "rate": 8.0,
+      "rate": 8,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -372,7 +372,7 @@
       "rate": 5.5,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -387,7 +387,7 @@
       "rate": 5.5,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -398,7 +398,7 @@
     "rate": 12.75,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Справка"
   },
   {
@@ -409,7 +409,7 @@
     "rate": 12.75,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -420,7 +420,7 @@
     "rate": 13.25,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -455,7 +455,7 @@
     "rate": 14.9,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -463,10 +463,10 @@
     "bankId": "belarusbank",
     "name": "Льготный по указу №13",
     "type": "mortgage",
-    "rate": 15.0,
+    "rate": 15,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -474,10 +474,10 @@
     "bankId": "belarusbank",
     "name": "Льготный по указу №75",
     "type": "mortgage",
-    "rate": 3.0,
+    "rate": 3,
     "maxAmount": 200000,
     "maxTerm": 120,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Фикс., справка"
   },
   {
@@ -498,7 +498,7 @@
     "rate": 13.25,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -592,14 +592,14 @@
     "bankId": "priorbank",
     "name": "Дружная семья",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 700000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 14.0,
+      "rate": 14,
       "months": 18
     },
-    "firstPayment": 20.0,
+    "firstPayment": 20,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -607,14 +607,14 @@
     "bankId": "priorbank",
     "name": "Строительство под залог",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 700000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 14.0,
+      "rate": 14,
       "months": 18
     },
-    "firstPayment": 20.0,
+    "firstPayment": 20,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -622,14 +622,14 @@
     "bankId": "priorbank",
     "name": "Покупка под залог",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 700000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 14.0,
+      "rate": 14,
       "months": 18
     },
-    "firstPayment": 20.0,
+    "firstPayment": 20,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -637,14 +637,14 @@
     "bankId": "priorbank",
     "name": "Покупка под поручительство",
     "type": "mortgage",
-    "rate": 16.0,
+    "rate": 16,
     "maxAmount": 700000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 14.0,
+      "rate": 14,
       "months": 18
     },
-    "firstPayment": 20.0,
+    "firstPayment": 20,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -652,14 +652,14 @@
     "bankId": "priorbank",
     "name": "Покупка под поручительство",
     "type": "mortgage",
-    "rate": 18.0,
+    "rate": 18,
     "maxAmount": 900000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 14.0,
+      "rate": 14,
       "months": 16
     },
-    "firstPayment": 20.0,
+    "firstPayment": 20,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -707,7 +707,7 @@
     "bankId": "belagroprombank",
     "name": "На товары отеч. произв. без поручителя",
     "type": "consumer",
-    "rate": 15.0,
+    "rate": 15,
     "maxAmount": 35000,
     "maxTerm": 120,
     "specialTerms": "Справка, поручители, стаж от 3 мес."
@@ -754,7 +754,7 @@
       "rate": 9.5,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители от 35000"
   },
   {
@@ -769,7 +769,7 @@
       "rate": 5.9,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -784,7 +784,7 @@
       "rate": 5.9,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -799,7 +799,7 @@
       "rate": 12.9,
       "months": 36
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -814,7 +814,7 @@
       "rate": 14.5,
       "months": 6
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, без поручителей, залог"
   },
   {
@@ -825,7 +825,7 @@
     "rate": 12.75,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -833,11 +833,11 @@
     "bankId": "belagroprombank",
     "name": "На покупку домокомплектов (онлайн)",
     "type": "mortgage",
-    "rate": 15.0,
+    "rate": 15,
     "maxAmount": 35000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 10.0,
+      "rate": 10,
       "months": 4
     },
     "specialTerms": "Справка от 5000, без поручителей"
@@ -847,11 +847,11 @@
     "bankId": "belagroprombank",
     "name": "На покупку домокомплектов (офлайн)",
     "type": "mortgage",
-    "rate": 15.0,
+    "rate": 15,
     "maxAmount": 200000,
     "maxTerm": 240,
     "firstMonths": {
-      "rate": 10.0,
+      "rate": 10,
       "months": 4
     },
     "specialTerms": "Справка от 5000, поручители от 35"
@@ -864,7 +864,7 @@
     "rate": 15.9,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Переменная, справка"
   },
   {
@@ -875,7 +875,7 @@
     "rate": 17.71,
     "maxAmount": 200000,
     "maxTerm": 360,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -950,7 +950,7 @@
       "rate": 1.99,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1007,7 +1007,7 @@
       "rate": 11.99,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог"
   },
   {
@@ -1018,7 +1018,7 @@
     "rate": 15.3,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог от 1%"
   },
   {
@@ -1029,7 +1029,7 @@
     "rate": 15.3,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог от 1%"
   },
   {
@@ -1040,7 +1040,7 @@
     "rate": 15.3,
     "maxAmount": 200000,
     "maxTerm": 240,
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители, залог от 1%"
   },
   {
@@ -1072,7 +1072,7 @@
     "maxAmount": 10000,
     "maxTerm": 60,
     "firstMonths": {
-      "rate": 1e-06,
+      "rate": 0.000001,
       "months": 12
     },
     "specialTerms": "Без справок, без поручителей, стаж от 3 мес."
@@ -1153,7 +1153,7 @@
       "rate": 0.99,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители от 180000"
   },
   {
@@ -1168,7 +1168,7 @@
       "rate": 0.001,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители от 150000"
   },
   {
@@ -1180,10 +1180,10 @@
     "maxAmount": 600000,
     "maxTerm": 300,
     "firstMonths": {
-      "rate": 5.0,
+      "rate": 5,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители от 100000"
   },
   {
@@ -1195,10 +1195,10 @@
     "maxAmount": 600000,
     "maxTerm": 300,
     "firstMonths": {
-      "rate": 10.0,
+      "rate": 10,
       "months": 12
     },
-    "firstPayment": 10.0,
+    "firstPayment": 10,
     "specialTerms": "Справка, поручители от 100000"
   },
   {
@@ -1229,7 +1229,7 @@
     "rate": 16.75,
     "maxAmount": 70000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1240,7 +1240,7 @@
     "rate": 16.25,
     "maxAmount": 70000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1251,7 +1251,7 @@
     "rate": 16.25,
     "maxAmount": 70000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1262,7 +1262,7 @@
     "rate": 17.9,
     "maxAmount": 80000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1273,7 +1273,7 @@
     "rate": 16.25,
     "maxAmount": 80000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1284,7 +1284,7 @@
     "rate": 17.9,
     "maxAmount": 80000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   },
   {
@@ -1295,7 +1295,7 @@
     "rate": 16.25,
     "maxAmount": 80000,
     "maxTerm": 120,
-    "firstPayment": 25.0,
+    "firstPayment": 25,
     "specialTerms": "Без справок, без поручителей, без залога"
   }
 ]

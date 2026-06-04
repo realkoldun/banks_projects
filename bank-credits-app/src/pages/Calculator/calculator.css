@@ -72,3 +72,16 @@
 .calculator__summary-overpayment {
   color: var(--color-warning);
 }
+
+.calculator__placeholder {
+  margin-top: 1.5rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--color-bg-muted);
+  border-style: dashed;
+}
+
+.calculator__placeholder-text {
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+}

@@ -10,3 +10,23 @@
   font-size: 0.8rem;
   color: var(--color-text-muted);
 }
+
+.range-slider__input-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  background: transparent;
+  border: none;
+  border-bottom: 2px dashed var(--color-border);
+  outline: none;
+  min-width: 5ch;
+  padding: 0.1rem 0.25rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.range-slider__input-text:focus {
+  border-bottom-color: var(--color-accent);
+  border-bottom-style: solid;
+}

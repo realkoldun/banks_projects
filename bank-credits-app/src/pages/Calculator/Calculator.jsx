@@ -4,6 +4,7 @@ import { calcPayment, buildSchedule } from '../../utils/creditCalc'
 import { CALCULATOR, SHARED } from '../../locales'
 import Select from '../../components/Select'
 import RangeSlider from '../../components/RangeSlider'
+import AmountInput from '../../components/AmountInput'
 import CreditResult from '../../components/CreditResult'
 import PaymentChart from '../../components/PaymentChart'
 import PaymentSchedule from '../../components/PaymentSchedule'
@@ -11,6 +12,7 @@ import CompareCard from '../../components/CompareCard'
 import './calculator.css'
 
 const STORAGE_KEY = 'bank-calc-last'
+const MIN_AMOUNT = 50
 
 function loadLastState() {
   try {
@@ -35,14 +37,15 @@ function Calculator() {
 
   const credit = products.find(c => c.id === selectedCredit) || products[0]
   const bank = credit ? getBankById(banks, credit.bankId) : null
+  const isAmountValid = amount >= MIN_AMOUNT && (!credit?.maxAmount || amount <= credit.maxAmount)
   const ratePerMonth = credit ? credit.rate / 12 / 100 : 0
-  const monthlyPayment = credit ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
+  const monthlyPayment = credit && isAmountValid ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
   const totalPayment = monthlyPayment * term
   const overpayment = totalPayment - amount
 
   const schedule = useMemo(
-    () => buildSchedule(amount, ratePerMonth, term, monthlyPayment, paymentType),
-    [amount, ratePerMonth, term, monthlyPayment, paymentType]
+    () => (isAmountValid ? buildSchedule(amount, ratePerMonth, term, monthlyPayment, paymentType) : []),
+    [isAmountValid, amount, ratePerMonth, term, monthlyPayment, paymentType]
   )
 
   const totalInterest = schedule.reduce((s, r) => s + r.interest, 0)
@@ -91,14 +94,11 @@ function Calculator() {
           />
         </div>
 
-        <RangeSlider
+        <AmountInput
           label={CALCULATOR.amountLabel}
           value={amount}
           onChange={setAmount}
-          min={1000}
-          max={credit.maxAmount}
-          step={1000}
-          formatLabel={v => `${v.toLocaleString()} ${currency}`}
+          maxAmount={credit.maxAmount}
         />
 
         <RangeSlider
@@ -112,68 +112,78 @@ function Calculator() {
         />
       </div>
 
-      <div className="calculator__results">
-        <CreditResult
-          bank={bank}
-          credit={credit}
-          amount={amount}
-          term={term}
-          monthlyPayment={monthlyPayment}
-          totalPayment={totalPayment}
-          overpayment={overpayment}
-          paymentType={paymentType}
-          currency={currency}
-          rate={credit.rate}
-        />
-
-        <div className="card animate-in stagger-3 calculator__chart">
-          <h3 className="calculator__chart-title">{CALCULATOR.chartTitle}</h3>
-          <PaymentChart
-            totalPrincipal={amount}
-            totalInterest={totalInterest}
-            currency={currency}
-          />
-        </div>
-      </div>
-
-      <div className="animate-in calculator__compare-btn">
-        <button className="btn btn-outline" onClick={() => setShowCompare(!showCompare)}>
-          {showCompare ? CALCULATOR.hideCompare : CALCULATOR.compareBtn}
-        </button>
-      </div>
-
-      {showCompare && (
-        <div className="animate-in stagger-2" style={{ marginTop: '1.5rem' }}>
-          <div className="form-group" style={{ marginBottom: '1rem' }}>
-            <label className="form-label">{CALCULATOR.selectCompare}</label>
-            <Select
-              value={compareCredit}
-              onChange={setCompareCredit}
-              placeholder={CALCULATOR.selectPlaceholder}
-              options={products
-                .filter(c => c.id !== selectedCredit)
-                .map(c => {
-                  const b = getBankById(banks, c.bankId)
-                  return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
-                })}
+      {isAmountValid ? (
+        <>
+          <div className="calculator__results">
+            <CreditResult
+              bank={bank}
+              credit={credit}
+              amount={amount}
+              term={term}
+              monthlyPayment={monthlyPayment}
+              totalPayment={totalPayment}
+              overpayment={overpayment}
+              paymentType={paymentType}
+              currency={currency}
+              rate={credit.rate}
             />
+
+            <div className="card animate-in stagger-3 calculator__chart">
+              <h3 className="calculator__chart-title">{CALCULATOR.chartTitle}</h3>
+              <PaymentChart
+                totalPrincipal={amount}
+                totalInterest={totalInterest}
+                currency={currency}
+              />
+            </div>
           </div>
-          <div className="calculator__compare-panel">
-            <div className="card calculator__summary-card">
-              <div className="calculator__summary-header">
-                {bank.logo} {bank.name} — {credit.name}
+
+          <div className="animate-in calculator__compare-btn">
+            <button className="btn btn-outline" onClick={() => setShowCompare(!showCompare)}>
+              {showCompare ? CALCULATOR.hideCompare : CALCULATOR.compareBtn}
+            </button>
+          </div>
+
+          {showCompare && (
+            <div className="animate-in stagger-2" style={{ marginTop: '1.5rem' }}>
+              <div className="form-group" style={{ marginBottom: '1rem' }}>
+                <label className="form-label">{CALCULATOR.selectCompare}</label>
+                <Select
+                  value={compareCredit}
+                  onChange={setCompareCredit}
+                  placeholder={CALCULATOR.selectPlaceholder}
+                  options={products
+                    .filter(c => c.id !== selectedCredit)
+                    .map(c => {
+                      const b = getBankById(banks, c.bankId)
+                      return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
+                    })}
+                />
               </div>
-              <div className="calculator__summary-info">
-                {CALCULATOR.summaryPayment}: <strong className="calculator__summary-payment">{monthlyPayment.toFixed(2)} {currency}</strong><br />
-                {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
+              <div className="calculator__compare-panel">
+                <div className="card calculator__summary-card">
+                  <div className="calculator__summary-header">
+                    {bank.logo} {bank.name} — {credit.name}
+                  </div>
+                  <div className="calculator__summary-info">
+                    {CALCULATOR.summaryPayment}: <strong className="calculator__summary-payment">{monthlyPayment.toFixed(2)} {currency}</strong><br />
+                    {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
+                  </div>
+                </div>
+                <CompareCard credit={otherCredit} bank={otherBank} />
               </div>
             </div>
-            <CompareCard credit={otherCredit} bank={otherBank} />
+          )}
+
+          <PaymentSchedule schedule={schedule} term={term} />
+        </>
+      ) : (
+        <div className="card animate-in stagger-3 calculator__placeholder">
+          <div className="calculator__placeholder-text">
+            Введите корректную сумму кредита для расчёта
           </div>
         </div>
       )}
-
-      <PaymentSchedule schedule={schedule} term={term} />
     </div>
   )
 }
