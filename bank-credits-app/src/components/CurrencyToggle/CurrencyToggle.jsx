@@ -1,8 +1,6 @@
 import { CURRENCY } from '../../locales'
 import './currencyToggle.css'
-
 const currencies = Object.keys(CURRENCY.symbols)
-
 function CurrencyToggle({ value, onChange }) {
   return (
     <div className="currency-toggle">
@@ -23,5 +21,4 @@ function CurrencyToggle({ value, onChange }) {
     </div>
   )
 }
-
 export default CurrencyToggle

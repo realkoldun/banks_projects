@@ -5,7 +5,6 @@ import Compare from './pages/Compare'
 import Calculator from './pages/Calculator'
 import { FOOTER } from './locales'
 import './App.css'
-
 function App() {
   return (
     <div className="app">
@@ -23,5 +22,4 @@ function App() {
     </div>
   )
 }
-
 export default App

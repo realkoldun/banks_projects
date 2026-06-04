@@ -1,19 +1,13 @@
 import { useState } from 'react'
-import { convertFromBYN } from '../../api/exchangeRate'
 import { CALCULATOR } from '../../locales'
 import './paymentSchedule.css'
-
-function PaymentSchedule({ schedule, term, currency, rate }) {
+function PaymentSchedule({ schedule, term }) {
   const [showFull, setShowFull] = useState(false)
   if (!schedule || schedule.length === 0) return null
-
   const displayed = showFull ? schedule : schedule.slice(0, 6)
-  const curr = currency || 'BYN'
-  const r = rate || 1
-
-  const totalPayment = convertFromBYN(schedule.reduce((s, row) => s + row.payment, 0), r)
-  const totalInterest = convertFromBYN(schedule.reduce((s, row) => s + row.interest, 0), r)
-
+  const curr = 'BYN'
+  const totalPayment = schedule.reduce((s, row) => s + row.payment, 0)
+  const totalInterest = schedule.reduce((s, row) => s + row.interest, 0)
   return (
     <div className="card payment-schedule">
       <div className="payment-schedule__header">
@@ -26,7 +20,6 @@ function PaymentSchedule({ schedule, term, currency, rate }) {
           </button>
         )}
       </div>
-
       <div className="table-container" style={{
         maxHeight: showFull ? '500px' : 'auto',
         overflowY: showFull ? 'auto' : 'visible'
@@ -40,19 +33,18 @@ function PaymentSchedule({ schedule, term, currency, rate }) {
             </tr>
           </thead>
           <tbody>
-            {displayed.map(row => (
+              {displayed.map(row => (
               <tr key={row.month}>
                 <td>{row.month}</td>
-                <td>{convertFromBYN(row.payment, r).toFixed(2)} {curr}</td>
-                <td>{convertFromBYN(row.principal, r).toFixed(2)} {curr}</td>
-                <td>{convertFromBYN(row.interest, r).toFixed(2)} {curr}</td>
-                <td>{convertFromBYN(row.balance, r).toFixed(2)} {curr}</td>
+                <td>{row.payment.toFixed(2)} {curr}</td>
+                <td>{row.principal.toFixed(2)} {curr}</td>
+                <td>{row.interest.toFixed(2)} {curr}</td>
+                <td>{row.balance.toFixed(2)} {curr}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
       {showFull && (
         <div className="payment-schedule__summary">
           {CALCULATOR.sumPayments}: {totalPayment.toFixed(2)} {curr} · {CALCULATOR.sumInterest}: {totalInterest.toFixed(2)} {curr}
@@ -61,5 +53,4 @@ function PaymentSchedule({ schedule, term, currency, rate }) {
     </div>
   )
 }
-
 export default PaymentSchedule

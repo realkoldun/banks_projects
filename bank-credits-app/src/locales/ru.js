@@ -8,11 +8,9 @@ export const HEADER = {
   logoSuffix: 'т',
   logoSuffixSpan: 'Беларуси'
 }
-
 export const FOOTER = {
   text: '© 2025 Оптимизация кредитных услуг · Все данные основаны на открытых источниках банков РБ'
 }
-
 export const HOME = {
   title: 'Оптимизация кредитных услуг',
   subtitle: 'Анализ и сравнение кредитных продуктов банков Республики Беларусь. Найдите лучшие условия для ваших финансовых задач.',
@@ -33,7 +31,6 @@ export const HOME = {
   minRate: 'Мин. ставка',
   physicalShare: 'Доля физ. лиц'
 }
-
 export const COMPARE = {
   title: 'Сравнение кредитов',
   subtitle: 'Сравните условия различных банков и выберите оптимальный вариант',
@@ -42,9 +39,8 @@ export const COMPARE = {
   sortByAmount: 'По сумме (убыв.)',
   sortByTerm: 'По сроку (убыв.)',
   noData: 'Нет кредитных продуктов для отображения',
-  cols: ['Банк', 'Название', 'Тип', 'Ставка', 'Макс. сумма', 'Макс. срок']
+  cols: ['Банк', 'Название', 'Тип', 'Ставка', 'Макс. сумма', 'Макс. срок', 'Особые условия']
 }
-
 export const CALCULATOR = {
   title: 'Кредитный калькулятор',
   subtitle: 'Рассчитайте ежемесячный платёж, переплату и сравните условия разных банков',
@@ -78,7 +74,6 @@ export const CALCULATOR = {
   sumPayments: 'Сумма платежей',
   sumInterest: 'Проценты'
 }
-
 export const CREDIT_TABLE = {
   maxAmount: (amount, currency) => `${(amount / 1000).toFixed(0)} тыс. ${currency}`,
   maxTerm: (months) => {
@@ -87,12 +82,10 @@ export const CREDIT_TABLE = {
     return `${y} лет ${m} мес`
   }
 }
-
 export const FILTER = {
   typeLabel: 'Тип кредита',
   sortLabel: 'Сортировка'
 }
-
 export const SHARED = {
   rate: (n) => `${n}%`,
   rate_label: 'Процентная ставка',
@@ -109,13 +102,8 @@ export const SHARED = {
   marketShareLabel: (n) => `Доля рынка: ${n}%`,
   rateValue: (n) => `${n}%`
 }
-
 export const CURRENCY = {
   label: 'Валюта',
   BYN: 'BYN',
-  USD: 'USD',
-  EUR: 'EUR',
-  RUB: 'RUB',
-  CNY: 'CNY',
-  symbols: { BYN: 'Br', USD: '$', EUR: '€', RUB: '₽', CNY: '¥' }
+  symbols: { BYN: 'Br' }
 }

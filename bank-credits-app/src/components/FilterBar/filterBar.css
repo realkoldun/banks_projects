@@ -3,19 +3,8 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
-
 .filter-bar__group {
   flex: 1;
   min-width: 200px;
   margin-bottom: 0;
-}
-
-@media (max-width: 768px) {
-  .filter-bar__row {
-    flex-direction: column;
-  }
-
-  .filter-bar__group {
-    min-width: 100%;
-  }
 }

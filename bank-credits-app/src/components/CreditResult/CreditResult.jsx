@@ -1,6 +1,5 @@
 import { CALCULATOR, SHARED } from '../../locales'
 import './creditResult.css'
-
 function CreditResult({ bank, credit, amount, term, monthlyPayment, totalPayment, overpayment, paymentType, currency, rate }) {
   return (
     <div className="card credit-result" style={{ flex: 1, minWidth: '280px' }}>
@@ -11,7 +10,6 @@ function CreditResult({ bank, credit, amount, term, monthlyPayment, totalPayment
           <div className="credit-result__product-name">{credit?.name}</div>
         </div>
       </div>
-
       <div className="result-box">
         <div className="result-row">
           <span>{CALCULATOR.amountLabel}</span>
@@ -43,5 +41,4 @@ function CreditResult({ bank, credit, amount, term, monthlyPayment, totalPayment
     </div>
   )
 }
-
 export default CreditResult

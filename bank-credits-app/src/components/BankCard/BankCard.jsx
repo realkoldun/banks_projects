@@ -1,6 +1,5 @@
 import { SHARED } from '../../locales'
 import './bankCard.css'
-
 function BankCard({ bank, creditCount, minRate }) {
   return (
     <div className="card bank-card" style={{ borderLeft: `4px solid ${bank.color}` }}>
@@ -24,5 +23,4 @@ function BankCard({ bank, creditCount, minRate }) {
     </div>
   )
 }
-
 export default BankCard

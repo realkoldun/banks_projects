@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { HEADER } from '../../locales'
 import './header.css'
-
 function Header() {
   return (
     <header className="header">
@@ -24,5 +23,4 @@ function Header() {
     </header>
   )
 }
-
 export default Header
