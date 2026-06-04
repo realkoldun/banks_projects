@@ -5,12 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:server": "node server/index.js",
-    "dev:all": "npx concurrently \"npm run dev:server\" \"npm run dev\"",
-    "generate-data": "node scripts/generate-data.js",
-    "build": "npm run generate-data && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "predeploy": "npm run generate-data && vite build",
     "deploy": "gh-pages -d dist"
   },
   "homepage": "https://realkoldun.github.io/banks_projects/",
@@ -23,8 +19,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.0"
