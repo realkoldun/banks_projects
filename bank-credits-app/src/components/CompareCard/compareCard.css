@@ -42,3 +42,32 @@
 .compare-card__overpayment {
   color: var(--color-warning);
 }
+
+.compare-card__empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .compare-card {
+    width: 100%;
+  }
+  
+  .compare-card__logo {
+    font-size: 1.3rem;
+  }
+  
+  .compare-card__bank-name {
+    font-size: 0.95rem;
+  }
+  
+  .compare-card__product-name {
+    font-size: 0.8rem;
+  }
+  
+  .compare-card__payment {
+    font-size: 1.1rem;
+  }
+}

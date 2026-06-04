@@ -46,3 +46,47 @@
   font-size: 1.2rem;
   font-family: var(--font-display);
 }
+
+@media (max-width: 480px) {
+  .credit-result {
+    min-width: 0;
+  }
+  
+  .credit-result__header {
+    gap: 0.5rem;
+  }
+  
+  .credit-result__logo {
+    font-size: 1.5rem;
+  }
+  
+  .credit-result__bank-name {
+    font-size: 1rem;
+  }
+  
+  .credit-result__payment {
+    font-size: 1.1rem;
+  }
+  
+  .credit-result__overpayment {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .credit-result__logo {
+    font-size: 1.3rem;
+  }
+  
+  .credit-result__bank-name {
+    font-size: 0.95rem;
+  }
+  
+  .credit-result__product-name {
+    font-size: 0.8rem;
+  }
+  
+  .credit-result__rate {
+    font-size: 1rem;
+  }
+}
