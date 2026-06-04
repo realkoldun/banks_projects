@@ -9,64 +9,66 @@ import BankSelect from '../BankSelect'
 import { CALCULATOR, SHARED } from '../../locales'
 import './compareCard.css'
 
-function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products }) {
+function CompareCard({ initialAmount, initialTerm, banks, products, excludeCreditId }) {
   const [amount, setAmount] = useState(0)
   const [term, setTerm] = useState(0)
   const [paymentType, setPaymentType] = useState('annuity')
   const [bankFilter, setBankFilter] = useState('')
   const [localCreditId, setLocalCreditId] = useState('')
-  const lastCreditId = useRef(null)
+  const initialized = useRef(false)
 
+  // Инициализация суммы/срока один раз (из основного калькулятора)
   useEffect(() => {
-    if (credit && credit.id !== lastCreditId.current) {
-      lastCreditId.current = credit.id
-      // Инициализируем значения из основного калькулятора
-      const safeAmount = initialAmount && initialAmount >= MIN_AMOUNT
-        ? Math.min(initialAmount, credit.maxAmount || initialAmount)
-        : Math.min(10000, credit.maxAmount || 10000)
-      const safeTerm = initialTerm && initialTerm > 0
-        ? Math.min(initialTerm, credit.maxTerm || initialTerm)
-        : Math.min(24, credit.maxTerm || 24)
-      setAmount(safeAmount)
-      setTerm(safeTerm)
-      setBankFilter(credit.bankId || '')
-      setLocalCreditId(credit.id)
-    }
-  }, [credit, initialAmount, initialTerm])
+    if (initialized.current) return
+    const safeAmount = initialAmount && initialAmount >= MIN_AMOUNT ? initialAmount : 10000
+    const safeTerm = initialTerm && initialTerm > 0 ? initialTerm : 24
+    setAmount(safeAmount)
+    setTerm(safeTerm)
+    initialized.current = true
+  }, [initialAmount, initialTerm])
 
-  // Фильтрация продуктов по выбранному банку в CompareCard
+  // Фильтрация по банку + исключаем кредит основного калькулятора
   const filteredProducts = useProductsFilter(products || [], { bankId: bankFilter })
+    .filter(p => p.id !== excludeCreditId)
 
-  // Если выбрали банк — сбрасываем выбранный кредит на первый из фильтра
+  // Если выбранный кредит не попадает в фильтр — ставим первый
   useEffect(() => {
-    if (filteredProducts.length > 0) {
-      if (!filteredProducts.find(p => p.id === localCreditId)) {
-        setLocalCreditId(filteredProducts[0].id)
-      }
+    if (filteredProducts.length === 0) {
+      setLocalCreditId('')
+      return
+    }
+    if (!filteredProducts.find(p => p.id === localCreditId)) {
+      setLocalCreditId(filteredProducts[0].id)
     }
   }, [filteredProducts, localCreditId])
 
-  // Активный кредит — либо по localCreditId, либо исходный
   const activeCredit = useMemo(
-    () => filteredProducts.find(p => p.id === localCreditId) || credit,
-    [filteredProducts, localCreditId, credit]
+    () => filteredProducts.find(p => p.id === localCreditId) || null,
+    [filteredProducts, localCreditId]
   )
   const activeBank = activeCredit
     ? banks?.find(b => b.id === activeCredit.bankId)
-    : bank
+    : null
 
-  if (!credit && !activeCredit) return null
-
-  const targetCredit = activeCredit || credit
-  if (!targetCredit) return null
+  if (!activeCredit) {
+    return (
+      <div className="card compare-card">
+        <div className="compare-card__empty">
+          {bankFilter
+            ? 'Нет других кредитов выбранного банка для сравнения'
+            : 'Выберите банк или сбросьте фильтр'}
+        </div>
+      </div>
+    )
+  }
 
   const curr = 'BYN'
-  // Защита от NaN — если значения невалидны, не считаем
-  const safeAmount = amount && amount >= MIN_AMOUNT && amount <= (targetCredit.maxAmount || Infinity) ? amount : 0
-  const safeTerm = term && term > 0 && term <= (targetCredit.maxTerm || Infinity) ? term : 0
+  // Защита от NaN
+  const safeAmount = amount && amount >= MIN_AMOUNT && amount <= (activeCredit.maxAmount || Infinity) ? amount : 0
+  const safeTerm = term && term > 0 && term <= (activeCredit.maxTerm || Infinity) ? term : 0
   const isValid = safeAmount > 0 && safeTerm > 0
 
-  const ratePerMonth = targetCredit.rate / 12 / 100
+  const ratePerMonth = activeCredit.rate / 12 / 100
   const monthlyPayment = isValid ? calcPayment(safeAmount, ratePerMonth, safeTerm, paymentType) : 0
   const totalPayment = isValid ? monthlyPayment * safeTerm : 0
   const overpayment = isValid ? totalPayment - safeAmount : 0
@@ -77,7 +79,7 @@ function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products
         <span className="compare-card__logo">{activeBank?.logo}</span>
         <div>
           <div className="compare-card__bank-name">{activeBank?.name}</div>
-          <div className="compare-card__product-name">{targetCredit.name}</div>
+          <div className="compare-card__product-name">{activeCredit.name}</div>
         </div>
       </div>
 
@@ -95,10 +97,12 @@ function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products
           label={CALCULATOR.productLabel}
           value={localCreditId}
           onChange={setLocalCreditId}
-          options={filteredProducts.map(c => ({
-            value: c.id,
-            label: `${c.name} (${c.rate}%)`
-          }))}
+          options={filteredProducts.map(c => {
+            // Показываем банк только когда выбраны все банки
+            const b = banks?.find(bk => bk.id === c.bankId)
+            const bankPrefix = !bankFilter && b ? `${b.logo} ${b.name} — ` : ''
+            return { value: c.id, label: `${bankPrefix}${c.name} (${c.rate}%)` }
+          })}
         />
       )}
 
@@ -106,7 +110,7 @@ function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products
         label={CALCULATOR.amountLabel}
         value={amount}
         onChange={setAmount}
-        maxAmount={targetCredit.maxAmount}
+        maxAmount={activeCredit.maxAmount}
       />
 
       <RangeSlider
@@ -114,7 +118,7 @@ function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products
         value={term}
         onChange={setTerm}
         min={6}
-        max={targetCredit.maxTerm}
+        max={activeCredit.maxTerm}
         step={1}
         formatLabel={v => `${CALCULATOR.months(v)} (${CALCULATOR.years(v)})`}
       />
@@ -132,7 +136,7 @@ function CompareCard({ credit, bank, initialAmount, initialTerm, banks, products
       <div className="result-box compare-card__result">
         <div className="result-row">
           <span>{SHARED.rate_label}</span>
-          <span className="compare-card__rate">{targetCredit.rate}%</span>
+          <span className="compare-card__rate">{activeCredit.rate}%</span>
         </div>
         <div className="result-row">
           <span>{CALCULATOR.summaryPayment}</span>

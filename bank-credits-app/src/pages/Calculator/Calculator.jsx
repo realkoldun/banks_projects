@@ -34,7 +34,6 @@ function Calculator() {
   const [term, setTerm] = useState(last?.term || 24)
   const [paymentType, setPaymentType] = useState(last?.paymentType || 'annuity')
   const [showCompare, setShowCompare] = useState(false)
-  const [compareCredit, setCompareCredit] = useState('')
 
   const currency = 'BYN'
 
@@ -54,8 +53,6 @@ function Calculator() {
   )
 
   const totalInterest = schedule.reduce((s, r) => s + r.interest, 0)
-  const otherCredit = compareCredit ? filteredProducts.find(c => c.id === compareCredit) : null
-  const otherBank = otherCredit ? getBankById(banks, otherCredit.bankId) : null
 
   useEffect(() => {
     try {
@@ -89,7 +86,9 @@ function Calculator() {
             options={filteredProducts.map(c => {
               const b = getBankById(banks, c.bankId)
               const promo = c.firstMonths ? ` [${c.firstMonths.rate}% на ${c.firstMonths.months} мес.]` : ''
-              return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%${promo})` }
+              // Показываем банк только когда выбраны все банки
+              const bankPrefix = !bankFilter && b ? `${b.logo} ${b.name} — ` : ''
+              return { value: c.id, label: `${bankPrefix}${c.name} (${c.rate}%${promo})` }
             })}
             className="calculator__select-group"
           />
@@ -156,40 +155,23 @@ function Calculator() {
           </div>
 
           {showCompare && (
-            <div className="animate-in stagger-2" style={{ marginTop: '1.5rem' }}>
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label">{CALCULATOR.selectCompare}</label>
-                <Select
-                  value={compareCredit}
-                  onChange={setCompareCredit}
-                  placeholder={CALCULATOR.selectPlaceholder}
-                  options={filteredProducts
-                    .filter(c => c.id !== selectedCredit)
-                    .map(c => {
-                      const b = getBankById(banks, c.bankId)
-                      return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
-                    })}
-                />
-              </div>
-              <div className="calculator__compare-panel">
-                <div className="card calculator__summary-card">
-                  <div className="calculator__summary-header">
-                    {bank.logo} {bank.name} — {credit.name}
-                  </div>
-                  <div className="calculator__summary-info">
-                    {CALCULATOR.summaryPayment}: <strong className="calculator__summary-payment">{monthlyPayment.toFixed(2)} {currency}</strong><br />
-                    {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
-                  </div>
+            <div className="animate-in stagger-2 calculator__compare-panel" style={{ marginTop: '1.5rem' }}>
+              <div className="card calculator__summary-card">
+                <div className="calculator__summary-header">
+                  {bank.logo} {bank.name} — {credit.name}
                 </div>
-                <CompareCard
-                  credit={otherCredit}
-                  bank={otherBank}
-                  initialAmount={amount}
-                  initialTerm={term}
-                  banks={banks}
-                  products={products}
-                />
+                <div className="calculator__summary-info">
+                  {CALCULATOR.summaryPayment}: <strong className="calculator__summary-payment">{monthlyPayment.toFixed(2)} {currency}</strong><br />
+                  {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
+                </div>
               </div>
+              <CompareCard
+                initialAmount={amount}
+                initialTerm={term}
+                banks={banks}
+                products={products}
+                excludeCreditId={selectedCredit}
+              />
             </div>
           )}
 
