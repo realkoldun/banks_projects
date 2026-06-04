@@ -170,7 +170,7 @@ function Calculator() {
                     {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
                   </div>
                 </div>
-                <CompareCard credit={otherCredit} bank={otherBank} />
+                <CompareCard credit={otherCredit} bank={otherBank} initialAmount={amount} initialTerm={term} />
               </div>
             </div>
           )}

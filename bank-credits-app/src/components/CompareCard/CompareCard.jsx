@@ -1,29 +1,45 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { calcPayment } from '../../utils/creditCalc'
+import { MIN_AMOUNT } from '../../constants'
 import RangeSlider from '../RangeSlider'
+import AmountInput from '../AmountInput'
 import Select from '../Select'
 import { CALCULATOR, SHARED } from '../../locales'
 import './compareCard.css'
 
-function CompareCard({ credit, bank }) {
-  const [amount, setAmount] = useState(credit ? 10000 : 0)
-  const [term, setTerm] = useState(credit ? 24 : 0)
+function CompareCard({ credit, bank, initialAmount, initialTerm }) {
+  const [amount, setAmount] = useState(0)
+  const [term, setTerm] = useState(0)
   const [paymentType, setPaymentType] = useState('annuity')
+  const lastCreditId = useRef(null)
 
   useEffect(() => {
-    if (credit) {
-      setAmount(prev => Math.min(prev, credit.maxAmount))
-      setTerm(prev => Math.min(prev, credit.maxTerm))
+    if (credit && credit.id !== lastCreditId.current) {
+      lastCreditId.current = credit.id
+      // Инициализируем значения из основного калькулятора
+      const safeAmount = initialAmount && initialAmount >= MIN_AMOUNT
+        ? Math.min(initialAmount, credit.maxAmount || initialAmount)
+        : Math.min(10000, credit.maxAmount || 10000)
+      const safeTerm = initialTerm && initialTerm > 0
+        ? Math.min(initialTerm, credit.maxTerm || initialTerm)
+        : Math.min(24, credit.maxTerm || 24)
+      setAmount(safeAmount)
+      setTerm(safeTerm)
     }
-  }, [credit])
+  }, [credit, initialAmount, initialTerm])
 
   if (!credit) return null
 
   const curr = 'BYN'
+  // Защита от NaN — если значения невалидны, не считаем
+  const safeAmount = amount && amount >= MIN_AMOUNT && amount <= (credit.maxAmount || Infinity) ? amount : 0
+  const safeTerm = term && term > 0 && term <= (credit.maxTerm || Infinity) ? term : 0
+  const isValid = safeAmount > 0 && safeTerm > 0
+
   const ratePerMonth = credit.rate / 12 / 100
-  const monthlyPayment = calcPayment(amount, ratePerMonth, term, paymentType)
-  const totalPayment = monthlyPayment * term
-  const overpayment = totalPayment - amount
+  const monthlyPayment = isValid ? calcPayment(safeAmount, ratePerMonth, safeTerm, paymentType) : 0
+  const totalPayment = isValid ? monthlyPayment * safeTerm : 0
+  const overpayment = isValid ? totalPayment - safeAmount : 0
 
   return (
     <div className="card compare-card">
@@ -35,14 +51,11 @@ function CompareCard({ credit, bank }) {
         </div>
       </div>
 
-      <RangeSlider
+      <AmountInput
         label={CALCULATOR.amountLabel}
         value={amount}
         onChange={setAmount}
-        min={1000}
-        max={credit.maxAmount}
-        step={1000}
-        formatLabel={v => `${v.toLocaleString()} ${curr}`}
+        maxAmount={credit.maxAmount}
       />
 
       <RangeSlider
@@ -72,16 +85,16 @@ function CompareCard({ credit, bank }) {
         </div>
         <div className="result-row">
           <span>{CALCULATOR.summaryPayment}</span>
-          <span className="compare-card__payment">{monthlyPayment.toFixed(2)} {curr}</span>
+          <span className="compare-card__payment">{isValid ? monthlyPayment.toFixed(2) : '—'} {curr}</span>
         </div>
         <div className="result-row">
           <span>{CALCULATOR.totalAmount}</span>
-          <span>{totalPayment.toFixed(2)} {curr}</span>
+          <span>{isValid ? totalPayment.toFixed(2) : '—'} {curr}</span>
         </div>
         <div className="result-row total">
           <span>{CALCULATOR.summaryOverpayment}</span>
           <span className="compare-card__overpayment">
-            {overpayment.toFixed(2)} {curr} ({((overpayment / (amount || 1)) * 100).toFixed(1)}%)
+            {isValid ? `${overpayment.toFixed(2)} (${((overpayment / safeAmount) * 100).toFixed(1)}%)` : '—'} {curr}
           </span>
         </div>
       </div>
