@@ -1,18 +1,14 @@
 import { useState, useMemo } from 'react'
 import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { COMPARE } from '../../locales'
-import { useExchangeRates } from '../../hooks/useExchangeRates'
 import FilterBar from '../../components/FilterBar'
 import CreditTable from '../../components/CreditTable'
-import CurrencyToggle from '../../components/CurrencyToggle'
 import './compare.css'
 
 function Compare() {
   const [selectedType, setSelectedType] = useState('all')
   const [sortBy, setSortBy] = useState('rate')
-  const [currency, setCurrency] = useState('BYN')
 
-  const { rates } = useExchangeRates()
   const { banks, products, creditTypes, loading, error } = useBanksData()
 
   const uniqueTypes = useMemo(
@@ -41,10 +37,6 @@ function Compare() {
       <h1 className="page-title animate-in">{COMPARE.title}</h1>
       <p className="page-subtitle animate-in stagger-1">{COMPARE.subtitle}</p>
 
-      <div className="card animate-in" style={{ marginBottom: '1rem', padding: '1rem' }}>
-        <CurrencyToggle value={currency} onChange={setCurrency} />
-      </div>
-
       <FilterBar
         selectedType={selectedType}
         onTypeChange={setSelectedType}
@@ -54,7 +46,7 @@ function Compare() {
         creditTypes={creditTypes}
       />
 
-      <CreditTable products={sorted} getBankById={(id) => getBankById(banks, id)} currency={currency} rates={rates} creditTypes={creditTypes} />
+      <CreditTable products={sorted} getBankById={(id) => getBankById(banks, id)} creditTypes={creditTypes} />
     </div>
   )
 }

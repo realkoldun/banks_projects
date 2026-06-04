@@ -1,7 +1,7 @@
 import { COMPARE, CREDIT_TABLE, SHARED } from '../../locales'
 import './creditTable.css'
 
-function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
+function CreditTable({ products, getBankById, creditTypes }) {
   if (!products || products.length === 0) {
     return (
       <div className="card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>
@@ -9,8 +9,6 @@ function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
       </div>
     )
   }
-
-  const rate = rates?.[currency] || 1
 
   return (
     <div className="table-container">
@@ -25,7 +23,6 @@ function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
         <tbody>
           {products.map(credit => {
             const bank = getBankById(credit.bankId)
-            const convertedAmount = credit.maxAmount / rate
             return (
               <tr key={credit.id}>
                 <td>
@@ -34,7 +31,16 @@ function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
                     <span className="credit-table__bank-name">{bank.name}</span>
                   </div>
                 </td>
-                <td>{credit.name}</td>
+                <td>
+                  <div className="credit-table__name-cell">
+                    {credit.name}
+                    {credit.firstMonths && (
+                      <span className="badge badge-promo">
+                        {credit.firstMonths.rate}% первые {credit.firstMonths.months} мес.
+                      </span>
+                    )}
+                  </div>
+                </td>
                 <td>
                   <span className="badge badge-success">{creditTypes[credit.type]}</span>
                 </td>
@@ -47,8 +53,9 @@ function CreditTable({ products, getBankById, currency, rates, creditTypes }) {
                     {SHARED.rate(credit.rate)}
                   </span>
                 </td>
-                <td>{CREDIT_TABLE.maxAmount(convertedAmount, currency)}</td>
+                <td>{CREDIT_TABLE.maxAmount(credit.maxAmount, 'BYN')}</td>
                 <td>{CREDIT_TABLE.maxTerm(credit.maxTerm)}</td>
+                <td className="credit-table__special">{credit.specialTerms || '—'}</td>
               </tr>
             )
           })}

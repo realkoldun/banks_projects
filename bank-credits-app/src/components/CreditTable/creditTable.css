@@ -20,3 +20,30 @@
 .credit-table__rate--medium {
   color: var(--color-warning);
 }
+
+.credit-table__name-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 300px;
+}
+
+.credit-table__special {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  max-width: 250px;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.badge-promo {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  align-self: flex-start;
+}

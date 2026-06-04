@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { calcPayment } from '../../utils/creditCalc'
-import { convertFromBYN } from '../../api/exchangeRate'
 import RangeSlider from '../RangeSlider'
 import Select from '../Select'
 import { CALCULATOR, SHARED } from '../../locales'
 import './compareCard.css'
 
-function CompareCard({ credit, bank, currency, rates }) {
+function CompareCard({ credit, bank }) {
   const [amount, setAmount] = useState(credit ? 10000 : 0)
   const [term, setTerm] = useState(credit ? 24 : 0)
   const [paymentType, setPaymentType] = useState('annuity')
@@ -20,15 +19,11 @@ function CompareCard({ credit, bank, currency, rates }) {
 
   if (!credit) return null
 
-  const curr = currency || 'BYN'
-  const r = rates?.[curr] || 1
+  const curr = 'BYN'
   const ratePerMonth = credit.rate / 12 / 100
-  const monthlyPaymentBYN = calcPayment(amount, ratePerMonth, term, paymentType)
-  const totalPaymentBYN = monthlyPaymentBYN * term
-  const overpaymentBYN = totalPaymentBYN - amount
-  const monthlyPayment = convertFromBYN(monthlyPaymentBYN, r)
-  const totalPayment = convertFromBYN(totalPaymentBYN, r)
-  const overpayment = convertFromBYN(overpaymentBYN, r)
+  const monthlyPayment = calcPayment(amount, ratePerMonth, term, paymentType)
+  const totalPayment = monthlyPayment * term
+  const overpayment = totalPayment - amount
 
   return (
     <div className="card compare-card">
@@ -47,7 +42,7 @@ function CompareCard({ credit, bank, currency, rates }) {
         min={1000}
         max={credit.maxAmount}
         step={1000}
-        formatLabel={v => `${convertFromBYN(v, r).toLocaleString()} ${curr}`}
+        formatLabel={v => `${v.toLocaleString()} ${curr}`}
       />
 
       <RangeSlider
@@ -86,7 +81,7 @@ function CompareCard({ credit, bank, currency, rates }) {
         <div className="result-row total">
           <span>{CALCULATOR.summaryOverpayment}</span>
           <span className="compare-card__overpayment">
-            {overpayment.toFixed(2)} {curr} ({((overpayment / (convertFromBYN(amount, r) || 1)) * 100).toFixed(1)}%)
+            {overpayment.toFixed(2)} {curr} ({((overpayment / (amount || 1)) * 100).toFixed(1)}%)
           </span>
         </div>
       </div>

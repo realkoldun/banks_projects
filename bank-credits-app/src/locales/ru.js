@@ -42,7 +42,7 @@ export const COMPARE = {
   sortByAmount: 'По сумме (убыв.)',
   sortByTerm: 'По сроку (убыв.)',
   noData: 'Нет кредитных продуктов для отображения',
-  cols: ['Банк', 'Название', 'Тип', 'Ставка', 'Макс. сумма', 'Макс. срок']
+  cols: ['Банк', 'Название', 'Тип', 'Ставка', 'Макс. сумма', 'Макс. срок', 'Особые условия']
 }
 
 export const CALCULATOR = {
@@ -113,9 +113,5 @@ export const SHARED = {
 export const CURRENCY = {
   label: 'Валюта',
   BYN: 'BYN',
-  USD: 'USD',
-  EUR: 'EUR',
-  RUB: 'RUB',
-  CNY: 'CNY',
-  symbols: { BYN: 'Br', USD: '$', EUR: '€', RUB: '₽', CNY: '¥' }
+  symbols: { BYN: 'Br' }
 }

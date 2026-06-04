@@ -1,12 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { calcPayment, buildSchedule } from '../../utils/creditCalc'
-import { useExchangeRates } from '../../hooks/useExchangeRates'
-import { convertFromBYN } from '../../api/exchangeRate'
 import { CALCULATOR, SHARED } from '../../locales'
 import Select from '../../components/Select'
 import RangeSlider from '../../components/RangeSlider'
-import CurrencyToggle from '../../components/CurrencyToggle'
 import CreditResult from '../../components/CreditResult'
 import PaymentChart from '../../components/PaymentChart'
 import PaymentSchedule from '../../components/PaymentSchedule'
@@ -31,41 +28,34 @@ function Calculator() {
   const [amount, setAmount] = useState(last?.amount || 10000)
   const [term, setTerm] = useState(last?.term || 24)
   const [paymentType, setPaymentType] = useState(last?.paymentType || 'annuity')
-  const [currency, setCurrency] = useState(last?.currency || 'BYN')
   const [showCompare, setShowCompare] = useState(false)
   const [compareCredit, setCompareCredit] = useState('')
 
-  const { rates } = useExchangeRates()
+  const currency = 'BYN'
 
   const credit = products.find(c => c.id === selectedCredit) || products[0]
   const bank = credit ? getBankById(banks, credit.bankId) : null
-  const rate = rates?.[currency] || 1
   const ratePerMonth = credit ? credit.rate / 12 / 100 : 0
-  const monthlyPaymentBYN = credit ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
-  const totalPaymentBYN = monthlyPaymentBYN * term
-  const overpaymentBYN = totalPaymentBYN - amount
+  const monthlyPayment = credit ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
+  const totalPayment = monthlyPayment * term
+  const overpayment = totalPayment - amount
 
   const schedule = useMemo(
-    () => buildSchedule(amount, ratePerMonth, term, monthlyPaymentBYN, paymentType),
-    [amount, ratePerMonth, term, monthlyPaymentBYN, paymentType]
+    () => buildSchedule(amount, ratePerMonth, term, monthlyPayment, paymentType),
+    [amount, ratePerMonth, term, monthlyPayment, paymentType]
   )
 
-  const totalInterestBYN = schedule.reduce((s, r) => s + r.interest, 0)
+  const totalInterest = schedule.reduce((s, r) => s + r.interest, 0)
   const otherCredit = compareCredit ? products.find(c => c.id === compareCredit) : null
   const otherBank = otherCredit ? getBankById(banks, otherCredit.bankId) : null
-
-  const monthlyPayment = convertFromBYN(monthlyPaymentBYN, rate)
-  const totalPayment = convertFromBYN(totalPaymentBYN, rate)
-  const overpayment = convertFromBYN(overpaymentBYN, rate)
-  const amountDisplay = convertFromBYN(amount, rate)
 
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        creditId: selectedCredit, amount, term, paymentType, currency
+        creditId: selectedCredit, amount, term, paymentType
       }))
     } catch {}
-  }, [selectedCredit, amount, term, paymentType, currency])
+  }, [selectedCredit, amount, term, paymentType])
 
   if (dataLoading) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem' }}>Загрузка данных...</div></div>
   if (dataError) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>Ошибка: {dataError}</div></div>
@@ -84,7 +74,8 @@ function Calculator() {
             onChange={setSelectedCredit}
             options={products.map(c => {
               const b = getBankById(banks, c.bankId)
-              return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%)` }
+              const promo = c.firstMonths ? ` [${c.firstMonths.rate}% на ${c.firstMonths.months} мес.]` : ''
+              return { value: c.id, label: `${b?.logo} ${b?.name} — ${c.name} (${c.rate}%${promo})` }
             })}
             className="calculator__select-group"
           />
@@ -98,9 +89,6 @@ function Calculator() {
             ]}
             className="calculator__select-group"
           />
-          <div className="form-group calculator__select-group" style={{ minWidth: '200px' }}>
-            <CurrencyToggle value={currency} onChange={setCurrency} />
-          </div>
         </div>
 
         <RangeSlider
@@ -110,7 +98,7 @@ function Calculator() {
           min={1000}
           max={credit.maxAmount}
           step={1000}
-          formatLabel={v => `${convertFromBYN(v, rate).toLocaleString()} ${currency}`}
+          formatLabel={v => `${v.toLocaleString()} ${currency}`}
         />
 
         <RangeSlider
@@ -128,7 +116,7 @@ function Calculator() {
         <CreditResult
           bank={bank}
           credit={credit}
-          amount={amountDisplay}
+          amount={amount}
           term={term}
           monthlyPayment={monthlyPayment}
           totalPayment={totalPayment}
@@ -141,8 +129,8 @@ function Calculator() {
         <div className="card animate-in stagger-3 calculator__chart">
           <h3 className="calculator__chart-title">{CALCULATOR.chartTitle}</h3>
           <PaymentChart
-            totalPrincipal={amountDisplay}
-            totalInterest={convertFromBYN(totalInterestBYN, rate)}
+            totalPrincipal={amount}
+            totalInterest={totalInterest}
             currency={currency}
           />
         </div>
@@ -180,12 +168,12 @@ function Calculator() {
                 {CALCULATOR.summaryOverpayment}: <strong className="calculator__summary-overpayment">{overpayment.toFixed(2)} {currency}</strong>
               </div>
             </div>
-            <CompareCard credit={otherCredit} bank={otherBank} currency={currency} rates={rates} />
+            <CompareCard credit={otherCredit} bank={otherBank} />
           </div>
         </div>
       )}
 
-      <PaymentSchedule schedule={schedule} term={term} currency={currency} rate={rate} />
+      <PaymentSchedule schedule={schedule} term={term} />
     </div>
   )
 }
