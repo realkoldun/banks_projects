@@ -1,6 +1,5 @@
 import { COMPARE, CREDIT_TABLE, SHARED } from '../../locales'
 import './creditTable.css'
-
 function CreditTable({ products, getBankById, creditTypes }) {
   if (!products || products.length === 0) {
     return (
@@ -9,7 +8,6 @@ function CreditTable({ products, getBankById, creditTypes }) {
       </div>
     )
   }
-
   return (
     <div className="table-container">
       <table className="table">
@@ -64,5 +62,4 @@ function CreditTable({ products, getBankById, creditTypes }) {
     </div>
   )
 }
-
 export default CreditTable

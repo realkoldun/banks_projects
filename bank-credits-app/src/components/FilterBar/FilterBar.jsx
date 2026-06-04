@@ -1,7 +1,6 @@
 import Select from '../Select'
 import { COMPARE, FILTER } from '../../locales'
 import './filterBar.css'
-
 function FilterBar({
   selectedType,
   onTypeChange,
@@ -17,18 +16,15 @@ function FilterBar({
     { value: 'all', label: COMPARE.allTypes },
     ...uniqueTypes.map(type => ({ value: type, label: creditTypes[type] }))
   ]
-
   const sortOptions = [
     { value: 'rate', label: COMPARE.sortByRate },
     { value: 'amount', label: COMPARE.sortByAmount },
     { value: 'term', label: COMPARE.sortByTerm }
   ]
-
   const bankOptions = [
     { value: '', label: 'Все банки' },
     ...(banks || []).map(b => ({ value: b.id, label: `${b.logo} ${b.name}` }))
   ]
-
   return (
     <div className="card filter-bar" style={{ marginBottom: '2rem' }}>
       <div className="filter-bar__row">
@@ -54,5 +50,4 @@ function FilterBar({
     </div>
   )
 }
-
 export default FilterBar

@@ -3,7 +3,6 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
-
 .filter-bar__group {
   flex: 1;
   min-width: 200px;

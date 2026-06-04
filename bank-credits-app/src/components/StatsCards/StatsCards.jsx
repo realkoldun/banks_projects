@@ -1,5 +1,4 @@
 import './statsCards.css'
-
 function StatsCards({ stats }) {
   return (
     <section className="stats animate-in stagger-1">
@@ -14,5 +13,4 @@ function StatsCards({ stats }) {
     </section>
   )
 }
-
 export default StatsCards

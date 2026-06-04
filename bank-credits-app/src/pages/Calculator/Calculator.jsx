@@ -13,9 +13,7 @@ import PaymentChart from '../../components/PaymentChart'
 import PaymentSchedule from '../../components/PaymentSchedule'
 import CompareCard from '../../components/CompareCard'
 import './calculator.css'
-
 const STORAGE_KEY = 'bank-calc-last'
-
 function loadLastState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
@@ -23,10 +21,8 @@ function loadLastState() {
   } catch {}
   return null
 }
-
 function Calculator() {
   const { banks, products, loading: dataLoading, error: dataError } = useBanksData()
-
   const last = loadLastState()
   const [bankFilter, setBankFilter] = useState('')
   const [selectedCredit, setSelectedCredit] = useState(last?.creditId || '')
@@ -34,11 +30,8 @@ function Calculator() {
   const [term, setTerm] = useState(last?.term || 24)
   const [paymentType, setPaymentType] = useState(last?.paymentType || 'annuity')
   const [showCompare, setShowCompare] = useState(false)
-
   const currency = 'BYN'
-
   const filteredProducts = useProductsFilter(products, { bankId: bankFilter })
-
   const credit = filteredProducts.find(c => c.id === selectedCredit) || filteredProducts[0]
   const bank = credit ? getBankById(banks, credit.bankId) : null
   const isAmountValid = amount >= MIN_AMOUNT && (!credit?.maxAmount || amount <= credit.maxAmount)
@@ -46,14 +39,11 @@ function Calculator() {
   const monthlyPayment = credit && isAmountValid ? calcPayment(amount, ratePerMonth, term, paymentType) : 0
   const totalPayment = monthlyPayment * term
   const overpayment = totalPayment - amount
-
   const schedule = useMemo(
     () => (isAmountValid ? buildSchedule(amount, ratePerMonth, term, monthlyPayment, paymentType) : []),
     [isAmountValid, amount, ratePerMonth, term, monthlyPayment, paymentType]
   )
-
   const totalInterest = schedule.reduce((s, r) => s + r.interest, 0)
-
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -61,16 +51,13 @@ function Calculator() {
       }))
     } catch {}
   }, [selectedCredit, amount, term, paymentType])
-
   if (dataLoading) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem' }}>Загрузка данных...</div></div>
   if (dataError) return <div className="calculator-page"><div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>Ошибка: {dataError}</div></div>
   if (!credit) return null
-
   return (
     <div className="calculator-page">
       <h1 className="page-title animate-in">{CALCULATOR.title}</h1>
       <p className="page-subtitle animate-in stagger-1">{CALCULATOR.subtitle}</p>
-
       <div className="card animate-in stagger-2 calculator__params">
         <div className="calculator__row">
           <BankSelect
@@ -86,7 +73,6 @@ function Calculator() {
             options={filteredProducts.map(c => {
               const b = getBankById(banks, c.bankId)
               const promo = c.firstMonths ? ` [${c.firstMonths.rate}% на ${c.firstMonths.months} мес.]` : ''
-              // Показываем банк только когда выбраны все банки
               const bankPrefix = !bankFilter && b ? `${b.logo} ${b.name} — ` : ''
               return { value: c.id, label: `${bankPrefix}${c.name} (${c.rate}%${promo})` }
             })}
@@ -103,14 +89,12 @@ function Calculator() {
             className="calculator__select-group"
           />
         </div>
-
         <AmountInput
           label={CALCULATOR.amountLabel}
           value={amount}
           onChange={setAmount}
           maxAmount={credit.maxAmount}
         />
-
         <RangeSlider
           label={CALCULATOR.termLabel}
           value={term}
@@ -121,7 +105,6 @@ function Calculator() {
           formatLabel={v => `${CALCULATOR.months(v)} (${CALCULATOR.years(v)})`}
         />
       </div>
-
       {isAmountValid ? (
         <>
           <div className="calculator__results">
@@ -137,7 +120,6 @@ function Calculator() {
               currency={currency}
               rate={credit.rate}
             />
-
             <div className="card animate-in stagger-3 calculator__chart">
               <h3 className="calculator__chart-title">{CALCULATOR.chartTitle}</h3>
               <PaymentChart
@@ -147,13 +129,11 @@ function Calculator() {
               />
             </div>
           </div>
-
           <div className="animate-in calculator__compare-btn">
             <button className="btn btn-outline" onClick={() => setShowCompare(!showCompare)}>
               {showCompare ? CALCULATOR.hideCompare : CALCULATOR.compareBtn}
             </button>
           </div>
-
           {showCompare && (
             <div className="animate-in stagger-2 calculator__compare-panel" style={{ marginTop: '1.5rem' }}>
               <div className="card calculator__summary-card">
@@ -174,7 +154,6 @@ function Calculator() {
               />
             </div>
           )}
-
           <PaymentSchedule schedule={schedule} term={term} />
         </>
       ) : (
@@ -187,5 +166,4 @@ function Calculator() {
     </div>
   )
 }
-
 export default Calculator

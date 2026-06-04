@@ -3,14 +3,12 @@
   padding: 0;
   accent-color: var(--color-accent);
 }
-
 .range-slider__bounds {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
   color: var(--color-text-muted);
 }
-
 .range-slider__input-text {
   font-family: var(--font-display);
   font-size: 1.1rem;
@@ -25,7 +23,6 @@
   text-align: center;
   transition: border-color 0.2s;
 }
-
 .range-slider__input-text:focus {
   border-bottom-color: var(--color-accent);
   border-bottom-style: solid;

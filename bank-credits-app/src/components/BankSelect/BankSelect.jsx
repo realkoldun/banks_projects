@@ -1,12 +1,10 @@
 import Select from '../Select'
 import './bankSelect.css'
-
 function BankSelect({ banks, value, onChange, label = 'Банк' }) {
   const options = [
     { value: '', label: 'Все банки' },
     ...banks.map(b => ({ value: b.id, label: `${b.logo} ${b.name}` }))
   ]
-
   return (
     <div className="bank-select">
       <Select
@@ -18,5 +16,4 @@ function BankSelect({ banks, value, onChange, label = 'Банк' }) {
     </div>
   )
 }
-
 export default BankSelect

@@ -1,44 +1,35 @@
 .payment-chart {
   text-align: center;
 }
-
 .payment-chart__svg {
   width: 160px;
   height: 160px;
 }
-
 .payment-chart__bg {
   stroke: var(--color-border);
   opacity: 0.3;
 }
-
 .payment-chart__principal {
   stroke: var(--color-accent);
   transition: opacity 0.3s;
 }
-
 .payment-chart__principal:hover {
   opacity: 0.8;
 }
-
 .payment-chart__interest {
   stroke: var(--color-warning);
   transition: opacity 0.3s;
 }
-
 .payment-chart__interest:hover {
   opacity: 0.8;
 }
-
 .payment-chart__value {
   fill: var(--color-text);
   font-family: var(--font-display);
 }
-
 .payment-chart__currency {
   fill: var(--color-text-muted);
 }
-
 .payment-chart__legend {
   display: flex;
   justify-content: center;
@@ -47,13 +38,11 @@
   font-size: 0.85rem;
   flex-wrap: wrap;
 }
-
 .payment-chart__legend-item {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
-
 .payment-chart__dot {
   width: 12px;
   height: 12px;
@@ -61,11 +50,9 @@
   display: inline-block;
   flex-shrink: 0;
 }
-
 .payment-chart__dot--principal {
   background: var(--color-accent);
 }
-
 .payment-chart__dot--interest {
   background: var(--color-warning);
 }

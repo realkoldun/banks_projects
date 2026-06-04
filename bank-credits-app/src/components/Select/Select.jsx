@@ -1,5 +1,4 @@
 import './select.css'
-
 function Select({ label, value, onChange, options, placeholder, className = '' }) {
   return (
     <div className={`select-group ${className}`}>
@@ -19,5 +18,4 @@ function Select({ label, value, onChange, options, placeholder, className = '' }
     </div>
   )
 }
-
 export default Select

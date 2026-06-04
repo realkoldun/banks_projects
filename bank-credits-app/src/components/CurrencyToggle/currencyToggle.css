@@ -2,7 +2,6 @@
   display: flex;
   gap: 0.25rem;
 }
-
 .currency-toggle__btn {
   display: flex;
   flex-direction: column;
@@ -18,24 +17,20 @@
   transition: all var(--transition-fast);
   min-width: 48px;
 }
-
 .currency-toggle__btn:hover {
   border-color: var(--color-accent);
   color: var(--color-text);
 }
-
 .currency-toggle__btn--active {
   border-color: var(--color-accent);
   background: rgba(59, 130, 246, 0.15);
   color: var(--color-accent);
 }
-
 .currency-toggle__icon {
   font-size: 1.1rem;
   font-weight: 700;
   line-height: 1;
 }
-
 .currency-toggle__code {
   font-size: 0.7rem;
   text-transform: uppercase;

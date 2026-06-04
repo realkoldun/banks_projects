@@ -6,12 +6,10 @@ export function calcPayment(amount, ratePerMonth, term, type) {
   }
   return amount / term + amount * ratePerMonth
 }
-
 export function buildSchedule(amount, ratePerMonth, term, monthlyPayment, type) {
   const schedule = []
   let balance = amount
   const basePrincipal = amount / term
-
   for (let i = 1; i <= term; i++) {
     const interest = balance * ratePerMonth
     let principal

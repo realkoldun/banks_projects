@@ -1,34 +1,24 @@
 import { CALCULATOR } from '../../locales'
 import './paymentChart.css'
-
 function PaymentChart({ totalPrincipal, totalInterest, currency }) {
   const total = totalPrincipal + totalInterest
   if (total === 0) return null
-
   const radius = 45
   const cx = 60
   const cy = 60
   const strokeWidth = 12
-
   const principalPct = (totalPrincipal / total) * 100
   const interestPct = (totalInterest / total) * 100
-
-  // Сектор основного долга (начинаем сверху, идём по часовой стрелке)
   const principalArc = 360 * (principalPct / 100)
   const interestArc = 360 * (interestPct / 100)
-
-  // Радианы
   const startA = -90
   const principalEndA = startA + principalArc
   const interestEndA = principalEndA + interestArc
-
   const toRad = (deg) => (deg * Math.PI) / 180
   const polar = (cx, cy, r, deg) => ({
     x: cx + r * Math.cos(toRad(deg)),
     y: cy + r * Math.sin(toRad(deg))
   })
-
-  // Строим дугу как path
   const buildArc = (startDeg, endDeg) => {
     const start = polar(cx, cy, radius, startDeg)
     const end = polar(cx, cy, radius, endDeg)
@@ -36,12 +26,9 @@ function PaymentChart({ totalPrincipal, totalInterest, currency }) {
     const sweep = endDeg > startDeg ? 1 : 0
     return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${end.x} ${end.y}`
   }
-
   const principalPath = principalPct > 0 ? buildArc(startA, principalEndA) : ''
   const interestPath = interestPct > 0 ? buildArc(principalEndA, interestEndA) : ''
-
   const curr = currency || 'BYN'
-
   return (
     <div className="payment-chart">
       <svg className="payment-chart__svg" viewBox="0 0 120 120">
@@ -91,5 +78,4 @@ function PaymentChart({ totalPrincipal, totalInterest, currency }) {
     </div>
   )
 }
-
 export default PaymentChart
