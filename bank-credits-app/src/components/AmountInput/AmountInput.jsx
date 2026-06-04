@@ -1,7 +1,6 @@
 import { CALCULATOR } from '../../locales'
+import { MIN_AMOUNT } from '../../constants'
 import './amountInput.css'
-
-const MIN_AMOUNT = 50
 
 function AmountInput({ label, value, onChange, maxAmount }) {
   const handleChange = (e) => {

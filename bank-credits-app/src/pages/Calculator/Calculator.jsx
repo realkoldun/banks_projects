@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useBanksData, getBankById } from '../../hooks/useBanksData'
 import { calcPayment, buildSchedule } from '../../utils/creditCalc'
 import { CALCULATOR, SHARED } from '../../locales'
+import { MIN_AMOUNT } from '../../constants'
 import Select from '../../components/Select'
 import RangeSlider from '../../components/RangeSlider'
 import AmountInput from '../../components/AmountInput'
@@ -12,7 +13,6 @@ import CompareCard from '../../components/CompareCard'
 import './calculator.css'
 
 const STORAGE_KEY = 'bank-calc-last'
-const MIN_AMOUNT = 50
 
 function loadLastState() {
   try {
